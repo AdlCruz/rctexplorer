@@ -10,10 +10,10 @@ launch_explorer(df)
 \item{df}{Dataframe obtained through set_app_input()}
 }
 \description{
-This function takes one parameter
+This function takes a dataframe as parameter and launches the explorer application.
 }
 \examples{
-launch_explorer()
+launch_explorer(set_app_input(search_expr = 'psoriatic arthritis',fields = for_explorer, max_studies = 300))
 }
 \keyword{app}
 \keyword{launch}

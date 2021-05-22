@@ -10,19 +10,22 @@ set_app_input(search_expr, fields = for_explorer, max_studies = 500)
 \item{search_expr}{A string following the querying guidelines at
 https://clinicaltrials.gov/api/gui/ref/syntax and https://clinicaltrials.gov/api/gui/ref/expr}
 
-\item{fields}{A character vector with field names. Default list for_explorer is optimised for
-data explorer app performance.}
+\item{fields}{A character vector with field names. The explorer is optimised
+to work with the default list 'for_explorer' found in package "rctapi".}
 
 \item{max_studies}{A number indicating how many studies out of all that
 match the search expression will be returned.}
 }
 \description{
 This function takes a search expression and character vector with field names
-and returns one dataframe. This dataframe which must be named "df" is used by the data explorer app called by
+and returns one dataframe. 'set_app_input()' is meant to be used as input for
+the data explorer app as in the example.
+}
+\details{
 launch_explorer()
 }
 \examples{
-set_app_input(expr = 'psoriatic arthritis',fields = for_explorer, max_studies = 300)
+set_app_input(search_expr = 'psoriatic arthritis',fields = for_explorer, max_studies = 300)
 }
 \keyword{app}
 \keyword{input}

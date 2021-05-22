@@ -2,34 +2,35 @@
 
 #' Launch Data Explorer Shiny App
 #'
-#' This function takes one parameter
+#' This function takes a dataframe as parameter and launches the explorer application.
 #' @param df Dataframe obtained through set_app_input()
 #' @keywords launch app
 #' @export
 #' @examples
-#' launch_explorer()
+#' launch_explorer(set_app_input(search_expr = 'psoriatic arthritis',fields = for_explorer, max_studies = 300))
 
 launch_explorer <- function(df) {
-  
+
   require(shiny)
   require(shinydashboard)
   require(DT)
   require(dplyr)
   require(ggplot2)
   require(treemapify)
+  require(treemap)
   require(RColorBrewer)
   require(rctapi)
-  
+
   shinyApp(
     ui = fluidPage(
       titlePanel("Explore, Select, Download and Plot your search of clinicaltrials.gov",
                  windowTitle = "Data Explorer"),
-      tabsetPanel(id = "panels",    
+      tabsetPanel(id = "panels",
                   tabPanel("?", mainPanel(h3("App usage suggestions"),
-                                          h4("Data Table"),p("The DATATABLE tab displays the result of searching clinicaltrials.gov with your defined expression.\n The list of fields used is 'viz_fields'."),
+                                          h4("Data Table"),p("The DATATABLE tab displays the result of searching clinicaltrials.gov with your defined expression.\n The list of fields used is 'for_explorer'."),
                                           h4("Plots"),
-                                          h5("Univariable Analysis"),p("Plots showing the count of gender and age eligibility requirements, study types, conditions studied, and overall status variables"),
-                                          h5("Stacked bars"),p("This plot excludes observations with missing InterventionMeshTerm"),
+                                          h5("Univariable Analysis"),p(""),
+                                          h5("Bivariate Analysis"),p(""),
                                           h4("Data summaries"),p("'Data Snippet' displays the first 15 observations. Respectively, 'Summary' and 'Structure' display the output from calling summary() and str() functions on the search results"),
                   )),
                   tabPanel("Data Table",
@@ -43,40 +44,42 @@ launch_explorer <- function(df) {
                            )
                   ),
                   tabPanel("Plots",
-                           fluidRow(column(12,h3("Univariable Plots"))
-                           ),
-                           fluidRow(column(4,plotOutput("overallstatus_map")),column(4,plotOutput("studytype_map")),
-                                    column(4,plotOutput("gender_map")),column(4,plotOutput("condition_map")),
-                                    column(4,plotOutput("agerange_map")),column(4,plotOutput("phase_map"))
-                           ),
-                           fluidRow(column(12,h3("Studies by MESH Intervention Term"))
-                           ),
-                           fluidRow(column(1,actionButton("help_link", "?")), 
-                                    column(5,plotOutput("meshterm_phase_barplot")),
-                                    column(6,plotOutput("meshterm_status_barplot")),
-                                    column(6,plotOutput("meshterm_purpose_barplot")),
-                                    column(6,plotOutput("meshterm_allocation_barplot")),
-                                    column(6,plotOutput("meshterm_dmc_barplot")),
-                                    column(6,plotOutput("meshterm_condition_barplot"))
-                                    
-                           ),
-                           fluidRow(
-                             column(6,plotOutput("study_phase_enrollment_status"))
-                             #column(6,plotOutput("")),
-                           ),
-                           fluidRow(
-                             column(4))),
+
+                           fluidRow(column(10,h3("Univariate Plots"))),
+                           fluidRow(column(2,wellPanel(selectInput("treemap_var","Choose a variable",
+                                                           names(df),
+                                                           selected = "OverallStatus",
+                                                           selectize = FALSE))),
+                                    column(7,plotOutput("univariate_plot")),
+                                    column(3,dataTableOutput("univariate_table"))),
+                           hr(),
+                           fluidRow(column(10,h3("Bivariate Plots"))),
+                           fluidRow(column(10,h4("Stacked barplot"))),
+                           fluidRow(column(2,wellPanel(selectInput("biv_1","Choose a variable to group by",
+                                                                   names(df),
+                                                                   selected = "InterventionMeshTerm",
+                                                                   selectize = FALSE),
+                                                       selectInput("biv_2","Choose another variable",
+                                                                   names(df),
+                                                                   selected = "Phase",
+                                                                   selectize = FALSE),
+                                                       radioButtons("n_pct","Choose y-axis type",
+                                                                    c("count","percentage"), inline = TRUE))),
+                                    column(7,plotOutput("bivariate_plot")),
+                                    column(3,dataTableOutput("bivariate_table"))),
+                           hr()),
                   tabPanel("Data Snippet", verbatimTextOutput("snippet")),
                   tabPanel("Summary", verbatimTextOutput("summary")),
                   tabPanel("Structure", verbatimTextOutput("str")))),
+
     server = function(input, output, session) {
-      
+
       # buttons events
       observeEvent(input$help_link, {
         newvalue <- "?"
         updateTabItems(session, "panels", newvalue)
       })
-      
+
       # Generate data summaries
       output$summary <- renderPrint({
         summary(df)
@@ -88,16 +91,15 @@ launch_explorer <- function(df) {
       output$snippet <- renderPrint({
         head(df, n = 15)
       })
-      
+
       # data table output
-      # data table formatting
       output$df<- DT::renderDataTable({
         DT::datatable(
           df[, input$show_vars, drop = FALSE],
           selection = list(target = 'row+column'),
           filter = 'top',
           extensions = "Buttons",
-          
+
           options = list(
             lengthMenu = c(10, 50, 100, 200, length(df$NCTId)),
             pageLength = 10,
@@ -112,24 +114,73 @@ launch_explorer <- function(df) {
         )
       })
       # PLOTS
-      # Univariable maps
-      output$gender_map <- renderPlot(gender_map(df))
-      output$studytype_map <- renderPlot(studytype_map(df))
-      output$condition_map <- renderPlot(condition_map(df))
-      output$agerange_map <- renderPlot(agerange_map(df))
-      output$overallstatus_map <- renderPlot(overallstatus_map(df))
-      output$phase_map <- renderPlot(phase_map(df))
-      # Stacked bar plots focused on MESH Term
-      output$meshterm_phase_barplot <- renderPlot(meshterm_phase_barplot(df))
-      output$meshterm_status_barplot <- renderPlot(meshterm_status_barplot(df))
-      output$meshterm_purpose_barplot <- renderPlot(meshterm_purpose_barplot(df))
-      output$meshterm_allocation_barplot <- renderPlot(meshterm_allocation_barplot(df))
-      output$meshterm_dmc_barplot <- renderPlot(meshterm_dmc_barplot(df))
-      output$meshterm_condition_barplot <- renderPlot(meshterm_condition_barplot(df))
-      
-      
-      
+      # univariate plots
+      output$univariate_plot <- renderPlot({
+
+          tree_dat <- df %>% group_by(across(input$treemap_var)) %>% summarise(n = n())
+
+          treemap(tree_dat,
+                  index=input$treemap_var,
+                  vSize="n",
+                  type="index",
+                  title = input$treemap_var,
+                  title.legend = input$treemap_var,
+                  algorithm = "pivotSize",# "squarified"
+                  sortID = "size",
+                  palette = "HCL",
+                  draw = TRUE
+                )
+           })
+
+      output$univariate_table <- renderDataTable({
+
+        uni_dat <- df %>% group_by(across(input$treemap_var)) %>% summarise(n = n())
+        datatable(uni_dat)
+
+      })
+
+      # bivariate plots
+
+      output$bivariate_plot <- renderPlot({
+
+        biv_dat <- df %>% group_by(across(.cols = c(input$biv_1, input$biv_2))) %>% summarise(n = n())  %>%
+          arrange(desc(n)) %>% head(40) %>% ungroup()
+
+        if (input$n_pct == "count") {
+          ggplot(biv_dat,aes_string(x = input$biv_1, y = "n", fill = input$biv_2, label = "n")) +
+          geom_bar(stat = "identity")+
+          geom_text(size = 4, position = position_stack(vjust = 0.5)) +
+          labs(title = "")+
+          xlab(input$biv_1)+ylab("Count")+
+          theme(plot.title = element_text(hjust = 0.8))+
+          coord_flip()
+        } else {
+          ggplot(biv_dat,aes_string(x = input$biv_1, y = "n", fill = input$biv_2, label = "n")) +
+          geom_bar(stat = "identity", position = "fill")+
+          geom_text(size = 4, position = position_fill(vjust = 0.5)) +
+          labs(title = "")+
+          xlab(input$biv_1)+ylab("Percentage")+
+          theme(plot.title = element_text(hjust = 0.8))+
+          scale_y_continuous(labels = function(x) paste0(x*100, "%"))+
+          coord_flip()
+          }
+
+      })
+
+      output$bivariate_table <- renderDataTable({
+
+        biv_dat <- df %>% group_by(across(.cols = c(input$biv_1, input$biv_2))) %>%
+          summarise(n = n()) %>%  arrange(desc(n))
+
+        datatable(biv_dat)
+
+      })
+
+      # output$scatter_plot <-
+
+
+
+
     }
-    
   )
 }
