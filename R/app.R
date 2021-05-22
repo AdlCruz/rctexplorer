@@ -20,6 +20,7 @@ launch_explorer <- function(df) {
   require(treemap)
   require(RColorBrewer)
   require(rctapi)
+  require(naniar)
 
   shinyApp(
     ui = fluidPage(
@@ -46,6 +47,7 @@ launch_explorer <- function(df) {
                   tabPanel("Plots",
 
                            fluidRow(column(10,h3("Univariate Plots"))),
+                           fluidRow(column(10,h4("Treemap plot"))),
                            fluidRow(column(2,wellPanel(selectInput("treemap_var","Choose a variable",
                                                            names(df),
                                                            selected = "OverallStatus",
@@ -55,22 +57,38 @@ launch_explorer <- function(df) {
                            hr(),
                            fluidRow(column(10,h3("Bivariate Plots"))),
                            fluidRow(column(10,h4("Stacked barplot"))),
-                           fluidRow(column(2,wellPanel(selectInput("biv_1","Choose a variable to group by",
+                           fluidRow(column(2,wellPanel(selectInput("biv_1","Variables to group by",
                                                                    names(df),
                                                                    selected = "InterventionMeshTerm",
                                                                    selectize = FALSE),
-                                                       selectInput("biv_2","Choose another variable",
+                                                       selectInput("biv_2","",
                                                                    names(df),
                                                                    selected = "Phase",
-                                                                   selectize = FALSE),
+                                                                   selectize = F),
                                                        radioButtons("n_pct","Choose y-axis type",
                                                                     c("count","percentage"), inline = TRUE))),
                                     column(7,plotOutput("bivariate_plot")),
                                     column(3,dataTableOutput("bivariate_table"))),
-                           hr()),
+                           hr(),
+                  fluidRow(column(12,h3("Scatter Plot"))),
+                  fluidRow(column(2, wellPanel(selectInput("scatter_group", "Choose two variables \n to group by",
+                                                           names(df),
+                                                           selected = "InterventionMeshTerm",
+                                                           selectize = F),
+                                               selectInput("scatter_colour","",
+                                                            names(df),
+                                                            selected = "Phase",
+                                                           selectize = F))),
+                           column(7,plotlyOutput("scatter_plot")),
+                           column(3))), #add selection inputs
+                  # and filters
+
                   tabPanel("Data Snippet", verbatimTextOutput("snippet")),
                   tabPanel("Summary", verbatimTextOutput("summary")),
-                  tabPanel("Structure", verbatimTextOutput("str")))),
+                  tabPanel("Structure", verbatimTextOutput("str")),
+                  tabPanel("Missing Data",
+                           fluidRow(column(12,plotOutput("missing_data_plot"))))
+                  )),
 
     server = function(input, output, session) {
 
@@ -176,7 +194,25 @@ launch_explorer <- function(df) {
 
       })
 
-      # output$scatter_plot <-
+      output$scatter_plot <- renderPlotly({
+        # think of filtering first
+
+        p <- df %>%
+          ggplot(aes_string(x = "EnrollmentCount",
+                            y = input$scatter_group,
+                            color = input$scatter_colour))+
+          geom_point(position = "jitter", inherit.aes = T)+
+          scale_y_discrete(label=abbreviate)
+
+       ggplotly(p)
+
+      })
+
+      output$missing_data_plot <- renderPlot({
+
+        gg_miss_var(df)
+
+      }, height = "200%")
 
 
 

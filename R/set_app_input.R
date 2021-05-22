@@ -22,7 +22,7 @@ set_app_input <- function (search_expr, fields = for_explorer, max_studies = 500
   # remove rank
   df <- df[,-1]
 
-  if (all(fields %in% for_explorer)) {
+  if (all(for_explorer %in% fields)) {
     df$AgeRange <- do.call(paste, c(df[ , age_cols], list(sep = '-')))
     # Character columns into factors
     df[fct_cols] <- lapply(df[fct_cols], factor)
