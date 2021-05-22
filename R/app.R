@@ -16,7 +16,6 @@ launch_explorer <- function(df) {
   require(DT)
   require(dplyr)
   require(ggplot2)
-  require(treemapify)
   require(treemap)
   require(RColorBrewer)
   require(rctapi)
@@ -212,7 +211,7 @@ launch_explorer <- function(df) {
 
         gg_miss_var(df)
 
-      }, height = "200%")
+      })
 
 
 
