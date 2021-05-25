@@ -13,8 +13,8 @@ This launches the application and explores the dataframe returned by the nested 
 
 2- The user can save a dataframe with study results either with ```set_app_input()``` or ```rctapi:: get_study_fields()``` and then launch the application with the saved dataframe as its argument.
 
-```df <- get_study_fields("psoriatic arthritis", registration_fields, 500)
-launch_explorer(df)```
+```df <- get_study_fields("psoriatic arthritis", registration_fields, 500)```
+```launch_explorer(df)```
 
 The user may modify the list of fields to feed into the application or even nest a different function returning a dataframe inside launch_explorer(). There is a degree of flexibility in that the appplication will take any dataframe and attempt to populate the application with it.
 
