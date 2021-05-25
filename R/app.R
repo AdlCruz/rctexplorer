@@ -27,11 +27,10 @@ launch_explorer <- function(df) {
                  windowTitle = "Data Explorer"),
       tabsetPanel(id = "panels",
                   tabPanel("?", mainPanel(h3("App usage suggestions"),
-                                          h4("Data Table"),p("The DATATABLE tab displays the result of searching clinicaltrials.gov with your defined expression.\n The list of fields used is 'for_explorer'."),
+                                          h4("Data Table"),p("The DATATABLE tab displays the result of searching clinicaltrials.gov with your defined expression.\n The default list of fields used is 'for_explorer'.\n"),
                                           h4("Plots"),
-                                          h5("Univariable Analysis"),p(""),
-                                          h5("Bivariate Analysis"),p(""),
                                           h4("Data summaries"),p("'Data Snippet' displays the first 15 observations. Respectively, 'Summary' and 'Structure' display the output from calling summary() and str() functions on the search results"),
+                                          h4("Missing values"), p("")
                   )),
                   tabPanel("Data Table",
                            fluidRow(
