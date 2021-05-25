@@ -20,6 +20,7 @@ launch_explorer <- function(df) {
   require(RColorBrewer)
   require(rctapi)
   require(naniar)
+  require(plotly)
 
   shinyApp(
     ui = fluidPage(
