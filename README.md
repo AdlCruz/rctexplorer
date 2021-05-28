@@ -23,14 +23,14 @@ The use of ```set_app_input()``` is recommended as it carries out useful cleanin
 
 Inside the application there are different tabs that allow the user to interact with their dataframe:
 
-Data Table: An interactive data table including the functinality to filter/select and download.
+**Data Table**: An interactive data table including the functinality to filter/select and download.
 
-Plots: Interactive plots including uinivariate treemaps, bivariate stacked barplots and more.
+**Plots**: Interactive plots including uinivariate treemaps, bivariate stacked barplots and more.
 
-Data snippet: Output of calling ```head(df)```.
+**Data snippet**: Output of calling ```head(df)```.
 
-Summary: Output of calling ```summary(df)```.
+**Summary**: Output of calling ```summary(df)```.
 
-Structure: Otput of calling ```str(df)```.
+**Structure**: Otput of calling ```str(df)```.
 
-Missing Values: Eplore the dataframe's missing values.
+**Missing Values**: Eplore the dataframe's missing values.
