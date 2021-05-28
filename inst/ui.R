@@ -19,13 +19,13 @@ ui = fluidPage(
                          )
                 ),
                 tabPanel("Plots",
-                         
+
                          fluidRow(column(10,h3("Univariate Plots"))),
                          fluidRow(column(10,h4("Treemap plot"))),
-                         fluidRow(column(2,wellPanel(selectInput("treemap_var","Choose a variable",
+                         fluidRow((column(2,wellPanel(selectInput("treemap_var","Choose a variable",
                                                                  names(df),
                                                                  selected = "OverallStatus",
-                                                                 selectize = FALSE))),
+                                                                 selectize = FALSE)))),
                                   column(7,plotOutput("univariate_plot")),
                                   column(3,dataTableOutput("univariate_table"))),
                          hr(),
@@ -56,7 +56,7 @@ ui = fluidPage(
                                   column(7,plotlyOutput("scatter_plot")),
                                   column(3))), #add selection inputs
                 # and filters
-                
+
                 tabPanel("Data Snippet", verbatimTextOutput("snippet")),
                 tabPanel("Summary", verbatimTextOutput("summary")),
                 tabPanel("Structure", verbatimTextOutput("str")),
