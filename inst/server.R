@@ -115,15 +115,28 @@ server = function(input, output, session) {
         # think of filtering first
 
         p <- df %>%
+          filter(EnrollmentCount <= input$sliderEnrollment[2] & EnrollmentCount >= input$sliderEnrollment[1]) %>%
             ggplot(aes_string(x = "EnrollmentCount",
                               y = input$scatter_group,
                               color = input$scatter_colour))+
             geom_point(position = "jitter", inherit.aes = T)+
-            scale_y_discrete(label=abbreviate)
+            scale_y_discrete(label=abbreviate) +
+          scale_color_manual(values = colorRampPalette(brewer.pal(n = 8, name = "Dark2"))
+                            (length(levels(df[,input$scatter_colour]))),na.value = "grey")+
+          theme(axis.title.x = element_blank(),axis.title.y = element_blank(),
+                legend.position = "top", legend.title = element_blank(),
+                panel.background = element_rect(fill = "gray95"),
+                panel.border = element_rect(linetype = "solid", fill = NA),
+                panel.grid.major = element_line(colour = "grey"),
+                #plot.margin = margin(0,0.1,0,0.25,"cm")
+                )
 
-        ggplotly(p)
+        ggplotly(p) #%>%layout(legend = list(orientation = "h", x = 0.4, y = -0.2))
+        # layout(autosize = F, width = 500, height = 500, margin = m)
 
     })
+
+
 
     output$missing_data_plot <- renderPlot({
 

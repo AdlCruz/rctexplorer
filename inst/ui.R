@@ -60,10 +60,13 @@ ui = fluidPage(
                                                                   names(df),
                                                                   selected = "Phase",
                                                                   selectize = F)),
-                                            column(3)))), # more scatter inputs here
+                                            column(3, sliderInput("sliderEnrollment","Filter by Enrollment",
+                                                                  min = 0, max = max(df[,"EnrollmentCount"]),
+                                                                  value = c(0,500),
+                                                                  step = T,ticks = T, sep = "."))))), # more scatter inputs here
                         fluidRow(column(9,plotlyOutput("scatter_plot")),
-                                  column(3)) # scatter groups tab here
-                        ), # end of plots tab
+                                  column(3) # scatter groups plot here
+                        )), # end of plots tab
 
                 tabPanel("Data Snippet", verbatimTextOutput("snippet")),
                 tabPanel("Summary", verbatimTextOutput("summary")),
