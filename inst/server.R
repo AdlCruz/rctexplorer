@@ -1,5 +1,14 @@
 server = function(input, output, session) {
+    # load selected_cols
+  selected_cols <- c("NCTId","StudyType","OverallStatus","StartDate",
+                     "CompletionDate","IsFDARegulatedDrug","IsFDARegulatedDevice","IsUnapprovedDevice",
+                     "OversightHasDMC","Condition","DesignPrimaryPurpose","Phase",
+                     "DesignInterventionModel","DesignMasking","DesignAllocation","EnrollmentCount",
+                     "ArmGroupType","InterventionType",
+                     "InterventionMeshTerm","Gender","MinimumAge","MaximumAge","HealthyVolunteers")
 
+  # clean enrollment count to set slider
+  enrolled <- df$EnrollmentCount[which(!is.na(df$EnrollmentCount))]
     # buttons events
     observeEvent(input$help_link, {
         newvalue <- "?"
@@ -69,7 +78,8 @@ server = function(input, output, session) {
 
     output$bivariate_plot <- renderPlot({
 
-        biv_dat <- df %>% group_by(across(.cols = c(input$biv_1, input$biv_2))) %>% summarise(n = n())  %>%
+        biv_dat <- df %>% group_by(across(.cols = c(input$biv_1, input$biv_2))) %>%
+          summarise(n = n())  %>%
             arrange(desc(n)) %>% head(40) %>% ungroup()
 
         p <- ggplot(biv_dat,aes_string(x = input$biv_1, y = "n", fill = input$biv_2, label = "n"))

@@ -61,7 +61,7 @@ ui = fluidPage(
                                                                   selected = "Phase",
                                                                   selectize = F)),
                                             column(3, sliderInput("sliderEnrollment","Filter by Enrollment",
-                                                                  min = 0, max = max(df[,"EnrollmentCount"]),
+                                                                  min = 0, max = max(enrolled),
                                                                   value = c(0,500),
                                                                   step = T,ticks = T, sep = "."))))), # more scatter inputs here
                         fluidRow(column(9,plotlyOutput("scatter_plot")),

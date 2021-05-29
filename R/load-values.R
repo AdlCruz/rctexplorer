@@ -1,11 +1,11 @@
 # select on display
 
-selected_cols <- c("NCTId","StudyType","OverallStatus","StartDate",
-                   "CompletionDate","IsFDARegulatedDrug","IsFDARegulatedDevice","IsUnapprovedDevice",
-                   "OversightHasDMC","Condition","DesignPrimaryPurpose","Phase",
-                   "DesignInterventionModel","DesignMasking","DesignAllocation","EnrollmentCount",
-                   "ArmGroupType","InterventionType",
-                   "InterventionMeshTerm","Gender","MinimumAge","MaximumAge","HealthyVolunteers")
+# selected_cols <- c("NCTId","StudyType","OverallStatus","StartDate",
+#                    "CompletionDate","IsFDARegulatedDrug","IsFDARegulatedDevice","IsUnapprovedDevice",
+#                    "OversightHasDMC","Condition","DesignPrimaryPurpose","Phase",
+#                    "DesignInterventionModel","DesignMasking","DesignAllocation","EnrollmentCount",
+#                    "ArmGroupType","InterventionType",
+#                    "InterventionMeshTerm","Gender","MinimumAge","MaximumAge","HealthyVolunteers")
 
 # variables to manipulae in set_app_input()
 
