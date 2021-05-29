@@ -1,5 +1,5 @@
 # rctexplorer
-Working version. Pkg in development. Install with ```devtools::install_github("AdlCruz/rctexplorer")```
+Currently not functional. Pkg in development. --(do not) Install with ```devtools::install_github("AdlCruz/rctexplorer")```--
 
 
 This package contains an R Shiny application that allows the user to explore the dataframe of studies obtained with ```rctapi:get_study_fields()```. 
