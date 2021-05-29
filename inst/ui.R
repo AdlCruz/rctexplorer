@@ -47,19 +47,23 @@ ui = fluidPage(
                                     )),
                          fluidRow(column(9, plotOutput("bivariate_plot")),
                                   column(3, dataTableOutput("bivariate_table"))),
+
+                         div(style = "margin-bottom:40px"),
                          hr(),
-                         fluidRow(column(12,h3("Scatter Plot"))),
-                         fluidRow(column(2, wellPanel(selectInput("scatter_group", "Choose two variables \n to group by",
+                         fluidRow((column(2,h3("Scatter Plot"),h4("Enrollment Count"), offset = 2)),
+                                  (column(7, column(4, selectInput("scatter_group", "Variables to group by",
                                                                   names(df),
                                                                   selected = "InterventionMeshTerm",
                                                                   selectize = F),
+                                                      div(style = "margin-top:-20px"),
                                                       selectInput("scatter_colour","",
                                                                   names(df),
                                                                   selected = "Phase",
-                                                                  selectize = F))),
-                                  column(7,plotlyOutput("scatter_plot")),
-                                  column(3))), #add selection inputs
-                # and filters
+                                                                  selectize = F)),
+                                            column(3)))), # more scatter inputs here
+                        fluidRow(column(9,plotlyOutput("scatter_plot")),
+                                  column(3)) # scatter groups tab here
+                        ), # end of plots tab
 
                 tabPanel("Data Snippet", verbatimTextOutput("snippet")),
                 tabPanel("Summary", verbatimTextOutput("summary")),
