@@ -53,7 +53,7 @@ server = function(input, output, session) {
                 title.legend = NA,
                 algorithm = "pivotSize",# "squarified"
                 sortID = "size",
-                palette = "HCL",
+                palette = colorRampPalette(brewer.pal(n = 8, name = "Dark2"))(length(levels(df[,input$treemap_var]))),
                 draw = TRUE
         )
     })
@@ -76,22 +76,26 @@ server = function(input, output, session) {
 
           if (input$n_pct == "count") {
            p <- p +  geom_bar(stat = "identity") +
-             geom_text(size = 4, position = position_stack(vjust = 0.5))}
+             geom_text(size = 4, position = position_stack(vjust = 0.5))
+             }
         else {
           p <- p + geom_bar(stat = "identity", position = "fill") +
-            geom_text(size = 4, position = position_fill(vjust = 0.5))}
+            geom_text(size = 4, position = position_fill(vjust = 0.5))
+            }
 
-          p <- p + theme(
-                plot.title = element_text(hjust = 0.8),
-                text = element_text(size = 13),
-                axis.title.x = element_blank(),axis.title.y = element_blank(),
-                legend.position = "top", legend.title = element_blank(),
-                panel.background = element_blank(),panel.border = element_rect(linetype = "solid", fill = NA),
-                panel.grid.major = element_line(colour = "grey"),
-                plot.margin = margin(0,0.1,0,0.25,"cm")) +
-            scale_y_discrete(expand = c(0,0)) +
-            scale_fill_manual(values = colorRampPalette(brewer.pal(n = 8, name = "Dark2"))(length(levels(df[,input$biv_2]))),
-                              na.value = "grey") +
+           p <- p +
+             theme(plot.title = element_text(hjust = 0.8),
+                 text = element_text(size = 13),
+                 axis.title.x = element_blank(),axis.title.y = element_blank(),
+                 legend.position = "top", legend.title = element_blank(),
+                 panel.background = element_rect(fill = "gray95"),
+                 panel.border = element_rect(linetype = "solid", fill = NA),
+                 panel.grid.major = element_line(colour = "grey"),
+                 plot.margin = margin(0,0.1,0,0.25,"cm")) +
+
+            scale_y_discrete(expand = c(0,0)) + scale_x_discrete()+
+            scale_fill_manual(values = colorRampPalette(brewer.pal(n = 8, name = "Dark2"))
+                              (length(levels(df[,input$biv_2]))),na.value = "grey") +
             coord_flip()
           p
 

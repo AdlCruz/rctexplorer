@@ -20,6 +20,6 @@ launch_explorer <- function(df) {
     require(naniar)
     require(plotly)
 
-    shiny::runApp(appDir = system.file("inst", package = "rctexplorer"))
+    shiny::runApp(appDir = system.file("", package = "rctexplorer"))
 
 }
