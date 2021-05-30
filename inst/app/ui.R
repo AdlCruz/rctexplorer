@@ -1,3 +1,16 @@
+
+# load selected_cols
+selected_cols <- c("NCTId","StudyType","OverallStatus","StartDate",
+                   "CompletionDate","IsFDARegulatedDrug","IsFDARegulatedDevice","IsUnapprovedDevice",
+                   "OversightHasDMC","Condition","DesignPrimaryPurpose","Phase",
+                   "DesignInterventionModel","DesignMasking","DesignAllocation","EnrollmentCount",
+                   "ArmGroupType","InterventionType",
+                   "InterventionMeshTerm","Gender","MinimumAge","MaximumAge","HealthyVolunteers")
+
+# clean enrollment count to set slider
+enrolled <- df$EnrollmentCount[which(!is.na(df$EnrollmentCount))]
+
+
 ui = fluidPage(
     titlePanel("Explore, Select, Download and Plot your search of clinicaltrials.gov",
                windowTitle = "Data Explorer"),
@@ -51,7 +64,7 @@ ui = fluidPage(
                          div(style = "margin-bottom:40px"),
                          hr(),
                          fluidRow((column(2,h3("Scatter Plot"),h4("Enrollment Count"), offset = 2)),
-                                  (column(7, column(4, selectInput("scatter_group", "Variables to group by",
+                                  (column(8, column(4, selectInput("scatter_group", "Variables to group by",
                                                                   names(df),
                                                                   selected = "InterventionMeshTerm",
                                                                   selectize = F),
@@ -60,10 +73,10 @@ ui = fluidPage(
                                                                   names(df),
                                                                   selected = "Phase",
                                                                   selectize = F)),
-                                            column(3, sliderInput("sliderEnrollment","Filter by Enrollment",
+                                            column(4, sliderInput("sliderEnrollment","Filter by Enrollment",
                                                                   min = 0, max = max(enrolled),
                                                                   value = c(0,500),
-                                                                  step = T,ticks = T, sep = "."))))), # more scatter inputs here
+                                                                  step = T,ticks = T, sep = ""))))), # more scatter inputs here
                         fluidRow(column(9,plotlyOutput("scatter_plot")),
                                   column(3) # scatter groups plot here
                         )), # end of plots tab

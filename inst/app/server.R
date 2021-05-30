@@ -1,14 +1,11 @@
-server = function(input, output, session) {
-    # load selected_cols
-  selected_cols <- c("NCTId","StudyType","OverallStatus","StartDate",
-                     "CompletionDate","IsFDARegulatedDrug","IsFDARegulatedDevice","IsUnapprovedDevice",
-                     "OversightHasDMC","Condition","DesignPrimaryPurpose","Phase",
-                     "DesignInterventionModel","DesignMasking","DesignAllocation","EnrollmentCount",
-                     "ArmGroupType","InterventionType",
-                     "InterventionMeshTerm","Gender","MinimumAge","MaximumAge","HealthyVolunteers")
 
-  # clean enrollment count to set slider
-  enrolled <- df$EnrollmentCount[which(!is.na(df$EnrollmentCount))]
+
+
+
+
+server = function(input, output, session) {
+
+
     # buttons events
     observeEvent(input$help_link, {
         newvalue <- "?"
@@ -123,6 +120,7 @@ server = function(input, output, session) {
 
     output$scatter_plot <- renderPlotly({
         # think of filtering first
+
 
         p <- df %>%
           filter(EnrollmentCount <= input$sliderEnrollment[2] & EnrollmentCount >= input$sliderEnrollment[1]) %>%

@@ -7,19 +7,8 @@
 #' @examples
 #' launch_explorer(set_app_input(search_expr = 'psoriatic arthritis',fields = for_explorer, max_studies = 300))
 
-launch_explorer <- function(df) {
+launch_explorer <- function(df = df) {
 
-    require(shiny)
-    require(shinydashboard)
-    require(DT)
-    require(dplyr)
-    require(ggplot2)
-    require(treemap)
-    require(RColorBrewer)
-    require(rctapi)
-    require(naniar)
-    require(plotly)
-
-    shiny::runApp(appDir = system.file("R", package = "rctexplorer"))
+    shiny::runApp(appDir = base::system.file("inst","app", package = "rctexplorer"))
 
 }
