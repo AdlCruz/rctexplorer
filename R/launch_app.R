@@ -9,6 +9,6 @@
 
 launch_explorer <- function(df = df) {
 
-    shiny::runApp(appDir = base::system.file("inst","app", package = "rctexplorer"))
+    shiny::runApp(system.file("app", package = "rctexplorer"))
 
 }

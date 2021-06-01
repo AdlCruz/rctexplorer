@@ -100,7 +100,7 @@ server = function(input, output, session) {
                  panel.grid.major = element_line(colour = "grey"),
                  plot.margin = margin(0,0.1,0,0.25,"cm")) +
 
-            scale_y_discrete(expand = c(0,0)) + scale_x_discrete()+
+            scale_y_discrete(expand = expansion(mult = c(0,0))) + scale_x_discrete()+
             scale_fill_manual(values = colorRampPalette(brewer.pal(n = 8, name = "Dark2"))
                               (length(levels(df[,input$biv_2]))),na.value = "grey") +
             coord_flip()
@@ -119,8 +119,6 @@ server = function(input, output, session) {
     })
 
     output$scatter_plot <- renderPlotly({
-        # think of filtering first
-
 
         p <- df %>%
           filter(EnrollmentCount <= input$sliderEnrollment[2] & EnrollmentCount >= input$sliderEnrollment[1]) %>%
@@ -128,21 +126,46 @@ server = function(input, output, session) {
                               y = input$scatter_group,
                               color = input$scatter_colour))+
             geom_point(position = "jitter", inherit.aes = T)+
+          # can add more things for tooltip with aes(text = ?
             scale_y_discrete(label=abbreviate) +
           scale_color_manual(values = colorRampPalette(brewer.pal(n = 8, name = "Dark2"))
                             (length(levels(df[,input$scatter_colour]))),na.value = "grey")+
           theme(axis.title.x = element_blank(),axis.title.y = element_blank(),
-                legend.position = "top", legend.title = element_blank(),
+                legend.position = "right", legend.title = element_blank(),
                 panel.background = element_rect(fill = "gray95"),
                 panel.border = element_rect(linetype = "solid", fill = NA),
-                panel.grid.major = element_line(colour = "grey"),
-                #plot.margin = margin(0,0.1,0,0.25,"cm")
+                panel.grid.major = element_line(colour = "grey")
                 )
 
-        ggplotly(p) #%>%layout(legend = list(orientation = "h", x = 0.4, y = -0.2))
-        # layout(autosize = F, width = 500, height = 500, margin = m)
+        ggplotly(p, height = 650, tooltip = c("x","y",input$scatter_colour))
 
     })
+
+    output$scatter_groups <- renderPlot({
+
+      scatt_dat <- df %>% group_by(across(.cols = c(input$scatter_colour))) %>%
+        summarise(n = n())
+
+      ggplot(scatt_dat, aes_string(x = input$scatter_colour, y = "n", fill = input$scatter_colour,  label = "n")) +
+        geom_col() +
+        geom_text(aes(label = n), hjust = -.2, size = 4) +
+
+        scale_fill_manual(values = colorRampPalette(brewer.pal(n = 8, name = "Dark2"))
+                          (length(levels(df[,input$scatter_colour]))),
+                          na.value = "grey") +
+        theme(
+          text = element_text(size = 13),
+          axis.title.x = element_blank(),axis.title.y = element_blank(),
+          axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+          legend.position = "none", #legend.title = element_blank(),legend.direction = "vertical",
+          panel.background = element_rect(fill = "gray95"),
+          panel.border = element_rect(linetype = "solid", fill = NA),
+          panel.grid.major = element_line(colour = "grey"), plot.margin = margin(0.7,0.5,0,0,"cm")
+        )+
+        scale_y_discrete(expand = expansion(mult = c(0, .08)))+
+        coord_flip()
+
+      }, height = 600)#
 
 
 
