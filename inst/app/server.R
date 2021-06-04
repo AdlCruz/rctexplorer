@@ -66,22 +66,32 @@ server = function(input, output, session) {
 
     output$univariate_table <- renderDataTable({
 
-        uni_dat <- df %>% group_by(across(input$treemap_var)) %>% summarise(n = n())
+        uni_dat <- df %>% group_by(across(input$treemap_var)) %>% summarise(n = n()) %>%
+          mutate("%"  = round(n*100/sum(n),2))
         datatable(uni_dat)
 
     })
 
     # bivariate plots
+    #
+    biv_data <- reactive({
+
+      biv_data <- df %>% group_by(across(.cols = c(input$biv_1, input$biv_2))) %>%
+          summarise(n = n())  %>% arrange(desc(n)) %>% ungroup()
+
+      if (input$filter_nas == "Hide") {na.omit(biv_data,c(input$biv_1))} else {biv_data}
+
+
+    })
 
     output$bivariate_plot <- renderPlot({
 
-        biv_dat <- df %>% group_by(across(.cols = c(input$biv_1, input$biv_2))) %>%
-          summarise(n = n())  %>%
-            arrange(desc(n)) %>% head(40) %>% ungroup()
+        # if input selected
+        biv_dat <- biv_data() %>% head(40)
 
         p <- ggplot(biv_dat,aes_string(x = input$biv_1, y = "n", fill = input$biv_2, label = "n"))
 
-          if (input$n_pct == "count") {
+          if (input$n_pct == "Count") {
            p <- p +  geom_bar(stat = "identity") +
              geom_text(size = 4, position = position_stack(vjust = 0.5))
              }
@@ -111,12 +121,13 @@ server = function(input, output, session) {
 
     output$bivariate_table <- renderDataTable({
 
-        biv_dat <- df %>% group_by(across(.cols = c(input$biv_1, input$biv_2))) %>%
-            summarise(n = n()) %>%  arrange(desc(n))
+        biv_table <- biv_data() %>% mutate("%"  = round(n*100/sum(n),4))
 
-        datatable(biv_dat)
+        datatable(biv_table)
 
     })
+
+    #scatter plot
 
     output$scatter_plot <- renderPlotly({
 
@@ -146,7 +157,8 @@ server = function(input, output, session) {
       scatt_dat <- df %>% group_by(across(.cols = c(input$scatter_colour))) %>%
         summarise(n = n())
 
-      ggplot(scatt_dat, aes_string(x = input$scatter_colour, y = "n", fill = input$scatter_colour,  label = "n")) +
+      ggplot(scatt_dat, aes_string(x = input$scatter_colour,
+                                   y = "n", fill = input$scatter_colour,  label = "n")) +
         geom_col() +
         geom_text(aes(label = n), hjust = -.2, size = 4) +
 
@@ -163,6 +175,7 @@ server = function(input, output, session) {
           panel.grid.major = element_line(colour = "grey"), plot.margin = margin(0.7,0.5,0,0,"cm")
         )+
         scale_y_discrete(expand = expansion(mult = c(0, .08)))+
+        scale_x_discrete(limits = rev)+
         coord_flip()
 
       }, height = 600)#

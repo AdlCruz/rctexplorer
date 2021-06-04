@@ -56,8 +56,10 @@ ui = fluidPage(
                                                                   selected = "Phase",
                                                                   selectize = F)),
                                                       column(3,radioButtons("n_pct", "Choose horizontal scale",
-                                                                   c("count", "percentage"))
-                                                      ))
+                                                                   c("Count", "Percentage"))),
+                                                      column(3,radioButtons("filter_nas","Filter NAs",
+                                                                   c("Show","Hide")))
+                                            )
                                     )),
                          fluidRow(column(9, plotOutput("bivariate_plot")),
                                   column(3, dataTableOutput("bivariate_table"))),
@@ -76,7 +78,7 @@ ui = fluidPage(
                                                                   selectize = F)),
                                             column(4, sliderInput("sliderEnrollment","Filter by Enrollment",
                                                                   min = 0, max = max(enrolled),
-                                                                  value = c(0,500),
+                                                                  value = c(0,max(enrolled)),
                                                                   step = T,ticks = T, sep = ""))))),# more scatter inputs here
                         fluidRow(column(9,plotlyOutput("scatter_plot")),
                                  column(3, plotOutput("scatter_groups")))
