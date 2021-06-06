@@ -112,7 +112,7 @@ server = function(input, output, session) {
 
             scale_y_discrete(expand = expansion(mult = c(0,0))) + scale_x_discrete()+
             scale_fill_manual(values = colorRampPalette(brewer.pal(n = 8, name = "Dark2"))
-                              (length(levels(df[,input$biv_2]))),na.value = "grey") +
+                              (length(levels(as.factor(df[,input$biv_2])))),na.value = "grey") +
             coord_flip()
           p
 
@@ -140,7 +140,7 @@ server = function(input, output, session) {
           # can add more things for tooltip with aes(text = ?
             scale_y_discrete(label=abbreviate) +
           scale_color_manual(values = colorRampPalette(brewer.pal(n = 8, name = "Dark2"))
-                            (length(levels(df[,input$scatter_colour]))),na.value = "grey")+
+                            (length(levels(as.factor(df[,input$scatter_colour])))),na.value = "grey")+
           theme(axis.title.x = element_blank(),axis.title.y = element_blank(),
                 legend.position = "right", legend.title = element_blank(),
                 panel.background = element_rect(fill = "gray95"),
@@ -184,6 +184,7 @@ server = function(input, output, session) {
 
     output$missing_data_plot <- renderPlot({
 
+        #df %>%
         gg_miss_var(df)
 
     })

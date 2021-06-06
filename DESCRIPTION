@@ -20,4 +20,5 @@ Depends:
     treemap,
     RColorBrewer,
     plotly,
-    naniar
+    naniar,
+    stats

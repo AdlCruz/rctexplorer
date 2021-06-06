@@ -22,10 +22,21 @@ set_app_input <- function (search_expr, fields = for_explorer, max_studies = 500
   # remove rank
   df <- df[,-1]
 
-  if (all(for_explorer %in% fields)) {
-    df$AgeRange <- do.call(paste, c(df[ , age_cols], list(sep = '-')))
+  # blanks into NAs
+  df <- na_if(df, "")
+
+  # trying any intstead of all
+  if (any(for_explorer %in% fields)) {
+
+    if (all(age_cols %in% fields)) {df$AgeRange <- do.call(paste, c(df[ , age_cols], list(sep = '-')))}
     # Character columns into factors
-    df[fct_cols] <- lapply(df[fct_cols], factor)
+    for(i in names(df)) {
+      # make fct_cols much bigger?
+      if(i %in% fct_cols){
+        df[,i] <- as.factor(df[,i])
+      }
+    }
+
   } else {print("The explorer is optimised for use with list 'for_explorer'")}
 
   # no empty columns
