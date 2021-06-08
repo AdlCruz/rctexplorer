@@ -88,6 +88,6 @@ ui = fluidPage(
                 tabPanel("Summary", verbatimTextOutput("summary")),
                 tabPanel("Structure", verbatimTextOutput("str")),
                 tabPanel("Missing Data",
-                         fluidRow(column(3), #missing data plot controls
-                                  column(9,plotOutput("missing_data_plot"))))
+                         fluidRow(column(2), #missing data plot controls
+                                  column(7,plotOutput("missing_data_plot"))))
     ))

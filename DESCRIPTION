@@ -22,4 +22,5 @@ Depends:
     plotly,
     naniar,
     stats,
-    purrr
+    purrr,
+    tidyr

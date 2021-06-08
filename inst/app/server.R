@@ -180,21 +180,38 @@ server = function(input, output, session) {
 
       }, height = 600)#
 
+  na_data <- reactive ({
 
+   na_dat <- df %>% map_df(~sum(is.na(.))) %>%
+      pivot_longer(cols = names(df),
+                   names_to = "Field",
+                   values_to = "Missing") %>%
+      mutate(PercentMissing = round(Missing*100/nrow(df),2)) %>%
+     arrange(Missing) %>%
+     mutate(Field = factor(Field,levels = Field)) %>%
+     mutate(PctNA = ifelse(PercentMissing >= 75,'> 75%',
+                           ifelse(PercentMissing >= 50,'> 50%',
+                                  ifelse(PercentMissing >= 25,'> 25%',
+                                         ifelse(PercentMissing >= 0,'> 0%',NA)))))
+
+
+
+  })
 
     output$missing_data_plot <- renderPlot({
 
-    p <-  df %>% map_df(~sum(is.na(.))) %>%
-        pivot_longer(cols = names(df),
-                     names_to = "Field",
-                     values_to = "Missing")
 
-    p$Field <- with(p, reorder(Field,Missing))
+    p <- na_data() %>% ggplot(aes(x=Field, y=PercentMissing)) +
+        geom_segment(aes(x=Field, xend=Field, y=0, yend = PercentMissing, color = PctNA),
+                     size = 1, alpha =0.9)+
+      geom_point(size=3, color="black", alpha = 0.9) +
 
-    p <- p %>% ggplot(aes(x=Field, y=Missing)) +
-        geom_point(size=4, color="blue", alpha = 0.8) +
-        geom_segment(aes(x=Field, xend=Field, y=0, yend=Missing), colour = "skyblue")+
-        coord_flip()
+      theme_light()+
+      theme(
+        legend.position = "none",
+        panel.border = element_blank()
+      )+
+      coord_flip()
 
     p
 
@@ -202,3 +219,5 @@ server = function(input, output, session) {
     }, height = 600)
 
 }# missing data output table
+
+
