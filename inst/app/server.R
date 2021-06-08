@@ -184,12 +184,21 @@ server = function(input, output, session) {
 
     output$missing_data_plot <- renderPlot({
 
-        #df %>%
-        gg_miss_var(df)
+    p <-  df %>% map_df(~sum(is.na(.))) %>%
+        pivot_longer(cols = names(df),
+                     names_to = "Field",
+                     values_to = "Missing")
 
-    })
+    p$Field <- with(p, reorder(Field,Missing))
+
+    p <- p %>% ggplot(aes(x=Field, y=Missing)) +
+        geom_point(size=4, color="blue", alpha = 0.8) +
+        geom_segment(aes(x=Field, xend=Field, y=0, yend=Missing), colour = "skyblue")+
+        coord_flip()
+
+    p
 
 
+    }, height = 600)
 
-
-}
+}# missing data output table

@@ -16,29 +16,20 @@
 #' @examples
 #' set_app_input(search_expr = 'psoriatic arthritis',fields = for_explorer, max_studies = 300)
 
-set_app_input <- function (search_expr, fields = for_explorer, max_studies = 500) {
+set_app_input <- function (search_expr,
+                           fields = for_explorer,
+                           max_studies = 500) {
 
   df <- rctapi::get_study_fields(search_expr,fields, max_studies)
+
   # remove rank
   df <- df[,-1]
-
   # blanks into NAs
   df <- na_if(df, "")
-
-  # trying any intstead of all
-  if (any(for_explorer %in% fields)) {
-
-    if (all(age_cols %in% fields)) {df$AgeRange <- do.call(paste, c(df[ , age_cols], list(sep = '-')))}
-    # Character columns into factors
-    for(i in names(df)) {
-      # make fct_cols much bigger?
-      if(i %in% fct_cols){
-        df[,i] <- as.factor(df[,i])
-      }
-    }
-
-  } else {print("The explorer is optimised for use with list 'for_explorer'")}
-
+  # columns to factors, age range column
+  df <- named_cols_to_factors(df, fct_cols = fct_cols)
+  if (all(age_cols %in% fields))
+    {df$AgeRange <- do.call(paste, c(df[ , age_cols], list(sep = '-')))}
   # no empty columns
   df <- df[, colSums( is.na(df) ) < nrow(df)]
 

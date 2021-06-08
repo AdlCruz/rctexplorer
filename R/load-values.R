@@ -3,20 +3,120 @@
 
 age_cols <- c("MinimumAge","MaximumAge")
 
-fct_cols <- c("StudyType","OverallStatus","IsFDARegulatedDrug","IsFDARegulatedDevice",
-              "IsUnapprovedDevice","Condition","DesignPrimaryPurpose","Phase",
-              "DesignInterventionModel","DesignMasking","DesignAllocation",
-              "InterventionMeshId","InterventionMeshTerm","Gender","MinimumAge",
-              "MaximumAge","AgeRange","HealthyVolunteers","WhyStopped","OversightHasDMC")
+fct_cols <- c(
+  "AgreementRestrictionType",
+  "ArmGroupType",
+  "AvailIPDType",
+  "BaselineDenomUnits",
+  "BaselineMeasureDispersionType",
+  "BaselineMeasureParamType",
 
-char_cols <- c("Keyword",
-               "ArmGroupLabel","ArmGroupType",
-               "InterventionType","InterventionName",
-               "PrimaryOutcomeMeasure")
+  "CompletionDateType",
+  "ConditionMeshId",
+  "ConditionMeshTerm",
+  "DelayedPosting",
+  "DesignAllocation",
+  "DesignInterventionModel",
+
+  "DesignMasking",
+
+  "DesignPrimaryPurpose",
+  "DesignTimePerspective",
+  "DesignWhoMasked",
+
+  "DispFirstPostDate",
+  "DispFirstPostDateType",
+  "DispFirstSubmitDate",
+  "DispFirstSubmitQCDate",
+
+  "EnrollmentType",
+
+  "FDAAA801Violation",
+
+  "Gender",
+  "GenderBased",
+  "HasExpandedAccess",
+  "HealthyVolunteers",
+  "IPDSharing",
+
+  "InterventionMeshId",
+  "InterventionMeshTerm",
+
+  "InterventionType",
+  "IsFDARegulatedDevice",
+  "IsFDARegulatedDrug",
+  "IsPPSD",
+  "IsUSExport",
+  "IsUnapprovedDevice",
+
+  "LastUpdatePostDateType",
+
+  "LeadSponsorClass",
+
+  "LocationCity",
+
+  "LocationCountry",
+
+  "LocationState",
+  "LocationStatus",
+
+  "MaximumAge",
+  "MinimumAge",
+
+  "OutcomeAnalysisDispersionType",
+
+  "OutcomeAnalysisNonInferiorityType",
+
+  "OutcomeAnalysisParamType",
+
+  "OutcomeMeasureDispersionType",
+  "OutcomeMeasureParamType",
+
+  "OutcomeMeasureReportingStatus",
+
+  "OutcomeMeasureType",
+  "OutcomeMeasureTypeUnitsAnalyzed",
+  "OutcomeMeasureUnitOfMeasure",
+
+  "OverallOfficialAffiliation",
+
+  "OverallStatus",
+  "OversightHasDMC",
+  "PatientRegistry",
+  "Phase",
+
+  "PrimaryCompletionDateType",
+
+
+  "ReferenceType",
+
+  "ResponsiblePartyType",
+
+  "ResultsFirstPostDateType",
+
+  "StartDateType",
+
+  "StudyFirstPostDateType",
+
+  "StudyPopulation",
+  "StudyType",
+  "TargetDuration",
+
+  "UnpostedEventType",
+
+  "VersionHolder",
+  "WhyStopped",
+  "Condition",
+  "MinimumAge",
+  "MaximumAge",
+  "AgeRange",
+  "HealthyVolunteers",
+  "OversightHasDMC"
+)
+
 
 date_cols <- c("StartDate","CompletionDate")
 
-num_cols <- c("EnrollmentCount")
 
-#usethis::use_data(age_cols,fct_cols,char_cols,date_cols,num_cols, internal = T, overwrite = T)
+#usethis::use_data(age_cols,fct_cols,date_cols, internal = T, overwrite = T)
 

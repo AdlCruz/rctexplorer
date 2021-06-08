@@ -21,4 +21,5 @@ Depends:
     RColorBrewer,
     plotly,
     naniar,
-    stats
+    stats,
+    purrr
