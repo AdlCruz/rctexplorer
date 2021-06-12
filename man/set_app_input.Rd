@@ -18,14 +18,16 @@ match the search expression will be returned.}
 }
 \description{
 This function takes a search expression and character vector with field names
-and returns one dataframe. 'set_app_input()' is meant to be used as input for
-the data explorer app as in the example.
+and returns one dataframe.
 }
 \details{
-launch_explorer()
+set_app_input()
 }
 \examples{
-set_app_input(search_expr = 'psoriatic arthritis',fields = for_explorer, max_studies = 300)
+'set_app_input()' cannot be used as input for the data explorer app as shown.
+launch_explorer(set_app_input(search_expr = 'psoriatic arthritis',fields = for_explorer, max_studies = 300))
+but must first be used to save a dataframe object
+df <- set_app_input(search_expr = 'psoriatic arthritis',fields = for_explorer, max_studies = 300)
 }
 \keyword{app}
 \keyword{input}

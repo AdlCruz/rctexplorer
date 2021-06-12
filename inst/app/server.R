@@ -1,16 +1,31 @@
 
-
-
-
-
 server = function(input, output, session) {
 
 
-    # buttons events
-    observeEvent(input$help_link, {
-        newvalue <- "?"
-        updateTabItems(session, "panels", newvalue)
-    })
+    # select deselect reset columns to show
+  observe({
+    if (input$select_all > 0) {
+      if (input$select_all %% 2 == 0){
+        updateCheckboxGroupInput(session=session, inputId="show_vars",
+                                 choices = c(names(df)),
+                                 selected = c(names(df)))
+
+      }
+      else {
+        updateCheckboxGroupInput(session=session, inputId="show_vars",
+                                 choices = c(names(df)),
+                                 selected = "")
+
+      }}
+  })
+
+  observe({
+    if (input$reset > 0) {
+      updateCheckboxGroupInput(session=session, inputId="show_vars",
+                               choices = c(names(df)),
+                              selected = selected_cols)
+    }
+  })
 
     # Generate data summaries
     output$summary <- renderPrint({

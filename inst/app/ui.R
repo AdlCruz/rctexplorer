@@ -1,14 +1,5 @@
 
-# load selected_cols
-selected_cols <- c("NCTId","StudyType","OverallStatus","StartDate",
-                   "CompletionDate","IsFDARegulatedDrug","IsFDARegulatedDevice","IsUnapprovedDevice",
-                   "OversightHasDMC","Condition","DesignPrimaryPurpose","Phase",
-                   "DesignInterventionModel","DesignMasking","DesignAllocation","EnrollmentCount",
-                   "ArmGroupType","InterventionType",
-                   "InterventionMeshTerm","Gender","MinimumAge","MaximumAge","HealthyVolunteers")
 
-# clean enrollment count to set slider
-enrolled <- df$EnrollmentCount[which(!is.na(df$EnrollmentCount))]
 
 
 ui = fluidPage(
@@ -25,7 +16,8 @@ ui = fluidPage(
                 tabPanel("Data Table",
                          fluidRow(
                              column(2,
-                                    wellPanel(
+                                    wellPanel(actionButton("select_all", label="All/None"),
+                                              actionButton("reset", label="Reset"),
                                         checkboxGroupInput("show_vars","Columns to show:",names(df),selected_cols)
                                     )
                              ),
@@ -55,8 +47,8 @@ ui = fluidPage(
                                                                   names(df),
                                                                   selected = "Phase",
                                                                   selectize = F)),
-                                                      column(3,radioButtons("n_pct", "Choose horizontal scale",
-                                                                   c("Count", "Percentage"))),
+                                                      column(3,radioButtons("n_pct", "Choose horizontal view",
+                                                                   c("Stack", "Fill"))),
                                                       column(3,radioButtons("filter_nas","Filter NAs",
                                                                    c("Show","Hide")))
                                             )

@@ -111,8 +111,8 @@ fct_cols <- c(
   "MaximumAge",
   "AgeRange",
   "HealthyVolunteers",
-  "OversightHasDMC"
-)
+  "OversightHasDMC",
+  "HasResults")
 
 
 date_cols <- c("StartDate","CompletionDate")
