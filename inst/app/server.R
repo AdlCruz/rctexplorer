@@ -29,18 +29,18 @@ server = function(input, output, session) {
 
     # Generate data summaries
     output$summary <- renderPrint({
-        summary(df)
+        summary(df[input$df_table_rows_all,])
     })
     output$str <- renderPrint({
         str(df)
     })
     # Get head of selected data
     output$snippet <- renderPrint({
-        head(df, n = 15)
+        head(df[input$df_table_rows_all,], n = 15)
     })
 
     # data table output
-    output$df<- DT::renderDataTable({
+    output$df_table <- DT::renderDataTable({
         DT::datatable(
             df[, input$show_vars, drop = FALSE],
             selection = list(target = 'row+column'),
@@ -64,7 +64,7 @@ server = function(input, output, session) {
     # univariate plots
     output$univariate_plot <- renderPlot({
 
-        tree_dat <- df %>% group_by(across(input$treemap_var)) %>% summarise(n = n())
+        tree_dat <- df[input$df_table_rows_all,] %>% group_by(across(input$treemap_var)) %>% summarise(n = n())
 
         treemap(tree_dat,
                 index=input$treemap_var,
@@ -81,7 +81,7 @@ server = function(input, output, session) {
 
     output$univariate_table <- renderDataTable({
 
-        uni_dat <- df %>% group_by(across(input$treemap_var)) %>% summarise(n = n()) %>%
+        uni_dat <- df[input$df_table_rows_all,] %>% group_by(across(input$treemap_var)) %>% summarise(n = n()) %>%
           mutate("%"  = round(n*100/sum(n),2))
         datatable(uni_dat)
 
@@ -91,7 +91,7 @@ server = function(input, output, session) {
     #
     biv_data <- reactive({
 
-      biv_data <- df %>% group_by(across(.cols = c(input$biv_1, input$biv_2))) %>%
+      biv_data <- df[input$df_table_rows_all,] %>% group_by(across(.cols = c(input$biv_1, input$biv_2))) %>%
           summarise(n = n())  %>% arrange(desc(n)) %>% ungroup()
 
       if (input$filter_nas == "Hide") {na.omit(biv_data,c(input$biv_1))} else {biv_data}
@@ -104,10 +104,10 @@ server = function(input, output, session) {
         # if input selected
         biv_dat <- biv_data() %>% head(40)
 
-        p <- ggplot(biv_dat,aes_string(x = input$biv_1, y = "n", fill = input$biv_2, label = "n"))
+        p <- ggplot(biv_dat,aes(x = reorder(!!sym(input$biv_1),-n), y = n, fill = !!sym(input$biv_2), label = n))
 
-          if (input$n_pct == "Count") {
-           p <- p +  geom_bar(stat = "identity") +
+          if (input$n_pct == "Stack") {
+           p <- p +  geom_bar(stat = "identity", position = "stack") +
              geom_text(size = 4, position = position_stack(vjust = 0.5))
              }
         else {
@@ -125,7 +125,8 @@ server = function(input, output, session) {
                  panel.grid.major = element_line(colour = "grey"),
                  plot.margin = margin(0,0.1,0,0.25,"cm")) +
 
-            scale_y_discrete(expand = expansion(mult = c(0,0))) + scale_x_discrete()+
+            scale_y_discrete(expand = expansion(mult = c(0,0))) +
+            scale_x_discrete(limits = rev)+
             scale_fill_manual(values = colorRampPalette(brewer.pal(n = 8, name = "Dark2"))
                               (length(levels(as.factor(df[,input$biv_2])))),na.value = "grey") +
             coord_flip()
@@ -146,7 +147,7 @@ server = function(input, output, session) {
 
     output$scatter_plot <- renderPlotly({
 
-        p <- df %>%
+        p <- df[input$df_table_rows_all,] %>%
           filter(EnrollmentCount <= input$sliderEnrollment[2] & EnrollmentCount >= input$sliderEnrollment[1]) %>%
             ggplot(aes_string(x = "EnrollmentCount",
                               y = input$scatter_group,
@@ -169,7 +170,7 @@ server = function(input, output, session) {
 
     output$scatter_groups <- renderPlot({
 
-      scatt_dat <- df %>% group_by(across(.cols = c(input$scatter_colour))) %>%
+      scatt_dat <- df[input$df_table_rows_all,] %>% group_by(across(.cols = c(input$scatter_colour))) %>%
         summarise(n = n())
 
       ggplot(scatt_dat, aes_string(x = input$scatter_colour,
@@ -197,7 +198,7 @@ server = function(input, output, session) {
 
   na_data <- reactive ({
 
-   na_dat <- df %>% map_df(~sum(is.na(.))) %>%
+   na_dat <- df[input$df_table_rows_all,] %>% map_df(~sum(is.na(.))) %>%
       pivot_longer(cols = names(df),
                    names_to = "Field",
                    values_to = "Missing") %>%
