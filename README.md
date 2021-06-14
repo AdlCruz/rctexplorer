@@ -1,29 +1,21 @@
 # rctexplorer
-Currently not functional. Pkg in development. --(do not) Install with ```devtools::install_github("AdlCruz/rctexplorer")```--
+Currently functional. Pkg in development. Install with ```devtools::install_github("AdlCruz/rctexplorer")```--
 
+This package contains an R Shiny application that allows the user to explore a dataframe of studies downloaded from clinicaltrials.gov. 
 
-This package contains an R Shiny application that allows the user to explore the dataframe of studies obtained with ```rctapi:get_study_fields()```. 
+Using the application:
 
-There are two main ways of using the application.
-
-1- The user can nest the package's two functions:
-
-```launch_explorer( set_app_input("psoriatic arthritis", for_explorer, 500) )```
-
-This launches the application and explores the dataframe returned by the nested function ```set_app_input()```. This function is optimised to feed into the application with the default list of fields ```for_explorer```.
-
-2- The user can save a dataframe with study results either with ```set_app_input()``` or ```rctapi:: get_study_fields()``` and then launch the application with the saved dataframe as its argument.
+Save a dataframe with study results either with ```set_app_input()``` or ```rctapi:: get_study_fields()``` and then launch the application with the saved dataframe as its argument.
 
 ```df <- set_app_input("psoriatic arthritis", registration_fields, 500)``` or
 ```df <- get_study_fields("psoriatic arthritis", core_info_fields, 500)``` then
 ```launch_explorer(df)```
 
-The use of ```set_app_input()``` is recommended as it carries out useful cleaning and transformations. There is a degree of flexiblity and the application will launch with any dataframe argument. The user may also modify the list of fields to feed into the application or even nest a different function returning a dataframe inside launch_explorer().
-
+The use of ```set_app_input()``` is recommended as it carries out useful cleaning and transformations. There is a degree of flexiblity and the application will launch with any dataframe argument. The user may also modify the list of fields to feed into the application.
 
 Inside the application there are different tabs that allow the user to interact with their dataframe:
 
-**Data Table**: An interactive data table including the functinality to filter/select and download.
+**Data Table**: An interactive data table including the functinality to filter/select and download. The filtering applied on this table is carreid on to the rest of tabs.
 
 **Plots**: Interactive plots including uinivariate treemaps, bivariate stacked barplots and more.
 
