@@ -54,11 +54,14 @@ ui = fluidPage(
                                             )
                                     )),
                          fluidRow(column(9, plotOutput("bivariate_plot")),
-                                  column(3, dataTableOutput("bivariate_table"))),
+                                  column(3, dataTableOutput("bivariate_table")),
+                                  div(style = "margin-bottom:50px")),
 
-                         div(style = "margin-bottom:50px"),
+
                          hr(),
-                         fluidRow((column(2,h3("Scatter Plot"),h4("Enrollment Count"), offset = 2)),
+
+                         fluidRow(div(style = "margin-top:50px"),
+                                  (column(2,h3("Scatter Plot"),h4("Enrollment Count"), offset = 2)),
                                   (column(8, column(4, selectInput("scatter_group", "Variables to group by",
                                                                   names(df),
                                                                   selected = "InterventionMeshTerm",
@@ -80,6 +83,7 @@ ui = fluidPage(
                 tabPanel("Summary", verbatimTextOutput("summary")),
                 tabPanel("Structure", verbatimTextOutput("str")),
                 tabPanel("Missing Data",
-                         fluidRow(column(2), #missing data plot controls
-                                  column(7,plotOutput("missing_data_plot"))))
+                         fluidRow(column(1), #missing data plot controls
+                                  column(7,plotOutput("missing_data_plot")),
+                                  column(4,dataTableOutput("missing_data_table"))))
     ))

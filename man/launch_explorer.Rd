@@ -13,7 +13,8 @@ launch_explorer(df = df)
 This function takes a dataframe as parameter and launches the explorer application.
 }
 \examples{
-launch_explorer(set_app_input(search_expr = 'psoriatic arthritis',fields = for_explorer, max_studies = 300))
+df <- set_app_input("psoriatic arthritis")
+launch_explorer(df)
 }
 \keyword{app}
 \keyword{launch}

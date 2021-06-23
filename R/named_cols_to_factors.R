@@ -2,7 +2,7 @@
 #'
 #' Carries out class transform to factor.
 #' Enhances datatable usage by providing ready levels on click of the filter boxes.
-#' 
+#'
 #'
 #' named_cols_to_factors()
 #' @param df a dataframe
@@ -10,11 +10,11 @@
 #' @examples
 #' Attempts to mutate all dataframe columns to factors by providing character vector of column names
 #' named_cols_to_factors(df, names(df))
-#' 
+#'
 named_cols_to_factors <- function (df, fct_cols = fct_cols) {
-    
+
     for(i in names(df)) {
-        # make fct_cols much bigger?
+
         if(i %in% fct_cols ){
             df[,i] <- as.factor(df[,i])
         }

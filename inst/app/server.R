@@ -61,7 +61,7 @@ server = function(input, output, session) {
         )
     })
     # PLOTS
-    # univariate plots
+    # One variable
     output$univariate_plot <- renderPlot({
 
         tree_dat <- df[input$df_table_rows_all,] %>% group_by(across(input$treemap_var)) %>% summarise(n = n())
@@ -72,7 +72,7 @@ server = function(input, output, session) {
                 type="index",
                 title = input$treemap_var,
                 title.legend = NA,
-                algorithm = "pivotSize",# "squarified"
+                algorithm = "pivotSize",
                 sortID = "size",
                 palette = colorRampPalette(brewer.pal(n = 8, name = "Dark2"))(length(levels(df[,input$treemap_var]))),
                 draw = TRUE
@@ -87,8 +87,8 @@ server = function(input, output, session) {
 
     })
 
-    # bivariate plots
-    #
+    # Two variables
+
     biv_data <- reactive({
 
       biv_data <- df[input$df_table_rows_all,] %>% group_by(across(.cols = c(input$biv_1, input$biv_2))) %>%
@@ -137,7 +137,7 @@ server = function(input, output, session) {
 
     output$bivariate_table <- renderDataTable({
 
-        biv_table <- biv_data() %>% mutate("%"  = round(n*100/sum(n),4))
+        biv_table <- biv_data() %>% mutate("%"  = round(n*100/sum(n),2))
 
         datatable(biv_table)
 
@@ -233,7 +233,11 @@ server = function(input, output, session) {
 
 
     }, height = 600)
+  output$missing_data_table <- renderDataTable({
 
-}# missing data output table
+    na_data() %>% arrange(desc(Missing))
+
+    })
+}
 
 

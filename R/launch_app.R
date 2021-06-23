@@ -5,7 +5,8 @@
 #' @keywords launch app
 #' @export
 #' @examples
-#' launch_explorer(set_app_input(search_expr = 'psoriatic arthritis',fields = for_explorer, max_studies = 300))
+#' df <- set_app_input("psoriatic arthritis")
+#' launch_explorer(df)
 
 launch_explorer <- function(df = df) {
 

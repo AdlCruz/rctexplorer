@@ -7,7 +7,7 @@
 #' clean_app_input(search_expr = 'psoriatic arthritis',fields = for_explorer, max_studies = 300)
 
 clean_app_input<- function (df) ({
-    
+
     # remove rank or NCTId
     df <- df[,-1]
     # blanks into NAs
@@ -18,13 +18,13 @@ clean_app_input<- function (df) ({
     if (all(age_cols %in% names(df))) {
         df$AgeRange <- do.call(paste, c(df[ , age_cols], list(sep = '-')))
     }
-    # results in study entry?
+    # results in study entry ?
     if (c("ResultsFirstPostDate") %in% names(df)) {
         df$HasResults <- ifelse(is.na(df$ResultsFirstPostDate), "No","Yes")
     }
     # no empty columns
     df <- df[, colSums( is.na(df) ) < nrow(df)]
-    
+
     return(df)
-    
+
 })
