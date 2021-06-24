@@ -99,9 +99,12 @@ server = function(input, output, session) {
 
     })
 
+
+
+    #plot
     output$bivariate_plot <- renderPlot({
 
-        # if input selected
+
         biv_dat <- biv_data() %>% head(40)
 
         p <- ggplot(biv_dat,aes(x = reorder(!!sym(input$biv_1),-n), y = n, fill = !!sym(input$biv_2), label = n))
@@ -178,9 +181,6 @@ server = function(input, output, session) {
         geom_col() +
         geom_text(aes(label = n), hjust = -.2, size = 4) +
 
-        scale_fill_manual(values = colorRampPalette(brewer.pal(n = 8, name = "Dark2"))
-                          (length(levels(df[,input$scatter_colour]))),
-                          na.value = "grey") +
         theme(
           text = element_text(size = 13),
           axis.title.x = element_blank(),axis.title.y = element_blank(),
@@ -192,6 +192,10 @@ server = function(input, output, session) {
         )+
         scale_y_discrete(expand = expansion(mult = c(0, .08)))+
         scale_x_discrete(limits = rev)+
+
+         scale_fill_manual(values = colorRampPalette(brewer.pal(n = 8, name = "Dark2"))
+                           (length(levels(as.factor(df[,input$scatter_colour])))),
+                           na.value = "grey") +
         coord_flip()
 
       }, height = 600)#
@@ -239,5 +243,6 @@ server = function(input, output, session) {
 
     })
 }
+
 
 

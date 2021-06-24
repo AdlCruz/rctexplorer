@@ -6,13 +6,6 @@ ui = fluidPage(
     titlePanel("Explore, Select, Download and Plot your search of clinicaltrials.gov",
                windowTitle = "Data Explorer"),
     tabsetPanel(id = "panels",
-                tabPanel("?", mainPanel(fluidRow(column(12,h3("Welcome to rctexplorer"),
-                                        h3("Data Table"),p("The Data Table tab displays the dataframe entered into the application through the launcher function. By default, the list of fields is 'for_explorer' from 'rctapi' paired with your search expression. Boxes at the top of each column show the categories held and alllow filtering. The dispalyed table can be copied or downloaded as csv excel or pdf."),
-                                        h3("Plots"),h4("Treemap"),p("Shows frequency of values from a chosen variable."),h4("Stacked barplot"),p("Computes summary of grouped variables chosen by user and shows them in stacked color filled bars."),h4("Scatter plot"),
-                                        p("Introduces the main numeric variable in your dataframe. Individual studies are scattered by their EnrollmentCount and grouped by two chosen variables. This plot is wrapped with 'plotly', making it interactive. Try hovering over the dots, clicking on the legend labels and zooming, selecting and panning around. The menu on the top right also allows download of the displayed plot."),
-                                        h3("Data summaries"),p("'Data Snippet' displays the first 15 observations. Respectively, 'Summary' and 'Structure' display the output from calling summary() and str() functions on the search results."),
-                                        h3("Missing values"), p(""), offset = 3)))
-                         ),
                 tabPanel("Data Table",
                          fluidRow(
                              column(2,
@@ -36,7 +29,8 @@ ui = fluidPage(
                                   column(7,plotOutput("univariate_plot")),
                                   column(3,div(style = "margin-top:10px"),dataTableOutput("univariate_table"))),
                          hr(),
-                         fluidRow((column(2,h3("Bivariate Plots"),h4("Stacked barplot"), offset = 2)),
+                         fluidRow((column(2,h3("Bivariate Plots"),h4("Stacked barplot"),h5("Only first 40 rows from the right side table"),
+                                          offset = 2)),
 
                                     (column(7,column(4,selectInput("biv_1","Variables to group by",
                                                                   names(df),
@@ -71,7 +65,7 @@ ui = fluidPage(
                                                                   names(df),
                                                                   selected = "Phase",
                                                                   selectize = F)),
-                                            column(4, sliderInput("sliderEnrollment","Filter by Enrollment",
+                                            column(4, sliderInput("sliderEnrollment","Filter by EnrollmentCount",
                                                                   min = 0, max = max(enrolled),
                                                                   value = c(0,max(enrolled)),
                                                                   step = T,ticks = T, sep = ""))))),# more scatter inputs here
@@ -79,11 +73,18 @@ ui = fluidPage(
                                  column(3, plotOutput("scatter_groups")))
                         ), # end of plots tab
 
-                tabPanel("Data Snippet", verbatimTextOutput("snippet")),
-                tabPanel("Summary", verbatimTextOutput("summary")),
-                tabPanel("Structure", verbatimTextOutput("str")),
+                tabPanel("Data Snippet",verbatimTextOutput("snippet")),
+                tabPanel("Summary",verbatimTextOutput("summary")),
+                tabPanel("Structure",verbatimTextOutput("str")),
                 tabPanel("Missing Data",
                          fluidRow(column(1), #missing data plot controls
                                   column(7,plotOutput("missing_data_plot")),
-                                  column(4,dataTableOutput("missing_data_table"))))
+                                  column(4,dataTableOutput("missing_data_table")))),
+                tabPanel("?", mainPanel(fluidRow(column(12,h3("Welcome to rctexplorer"),
+                                                        h3("Data Table"),p("The Data Table tab displays the dataframe entered into the application through the launcher function. By default, the list of fields is 'for_explorer' from 'rctapi' paired with your search expression. Boxes at the top of each column show the categories held and alllow filtering. The dispalyed table can be copied or downloaded as csv excel or pdf."),
+                                                        h3("Plots"),h4("Treemap"),p("Shows frequency of values from a chosen variable."),h4("Stacked barplot"),p("Computes summary of grouped variables chosen by user and shows them in stacked color filled bars."),h4("Scatter plot"),
+                                                        p("Introduces the main numeric variable in your dataframe. Individual studies are scattered by their EnrollmentCount and grouped by two chosen variables. This plot is wrapped with 'plotly', making it interactive. Try hovering over the dots, clicking on the legend labels and zooming, selecting and panning around. The menu on the top right also allows download of the displayed plot."),
+                                                        h3("Data summaries"),p("'Data Snippet' displays the first 15 observations. Respectively, 'Summary' and 'Structure' display the output from calling summary() and str() functions on the search results."),
+                                                        h3("Missing values"), p(""), offset = 3)))
+                )
     ))
