@@ -10,8 +10,8 @@ armify(df)
 \item{df}{a dataframe to manipulate}
 }
 \description{
-Takes data frame with studies restults and returnsdataframe with one row per arm
- with unioque study identifier.
+Takes data frame with studies restults and returns dataframe with one row per study
+and split intervention arms.
 armify()
 }
 \examples{

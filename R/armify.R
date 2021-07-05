@@ -1,14 +1,14 @@
 #' To Intervention Arms Table
 #'
-#' Takes data frame with studies restults and returnsdataframe with one row per arm
-#'  with unioque study identifier.
+#' Takes data frame with studies restults and returns dataframe with one row per study
+#' and split intervention arms.
 #' armify()
 #' @param df a dataframe to manipulate
 #' @examples
 #' armify(df)
 
 
-armify <- function(df) {#, row = "study"
+armify <- function(df) {
 
     af <- df %>% select(NCTId, EnrollmentCount, OverallStatus, Phase, IsFDARegulatedDrug, HasResults, ArmGroupInterventionName) %>% filter(!is.na(ArmGroupInterventionName))
     lab_names <- paste("label",seq(1:50),sep = "")
@@ -35,8 +35,5 @@ armify <- function(df) {#, row = "study"
     remake_wide$label1 <- ifelse(grepl("placebo",remake_wide$label1,ignore.case = T),"Any Placebo", remake_wide$label1)
     remake_wide$label2 <- ifelse(grepl("placebo",remake_wide$label2,ignore.case = T),"Any Placebo", remake_wide$label2)
 
-    # her might be the right place for selection of either first two treatments or all treatments
-
     return(remake_wide) # or make_long
 }
-
