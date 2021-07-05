@@ -103,6 +103,8 @@ server = function(input, output, session) {
                            id = unlist(c(dat$label1,dat$label2)))
       nodes <- nodes %>% group_by(label,id) %>% summarize(value = n()) %>% ungroup()
       nodes <- nodes %>% mutate(title = paste0("Appears ", nodes$value," times"))
+      nodes$group <- group_str(nodes$label, precision = 3, strict = FALSE, remove.empty = FALSE)
+      return(as.data.frame(nodes))
     })
 
     edges <- reactive({
@@ -111,7 +113,11 @@ server = function(input, output, session) {
       links <- as.data.frame(dat[(ncol(dat)-1):ncol(dat)])
       links <- cbind(links, dat[1:(ncol(dat)-2)])
       links$width <- log(as.numeric(links$EnrollmentCount))
-      links$title <- as.character(links$NCTId)
+      links$title <- paste0("<p>",as.character(links$NCTId),"</p>",
+                            "<p>","n",as.character(links$EnrollmentCount),"</p>",
+                            "<p>",as.character(links$Phase),"</p>",
+                            "<p>",as.character(links$OverallStatus),"</p>",
+                            "<p>","Results",as.character(links$HasResults),"</p>")
       links$smooth <- TRUE
       links <- plyr::rename(links, c("label1"="from", "label2"="to"))
       return(as.data.frame(links))
@@ -140,10 +146,10 @@ server = function(input, output, session) {
 
       nodes <- nodes()
       edges <- edges()
-      visNetwork(nodes = nodes,edges = edges, height = "1000px", width = "100%") %>%
-        visIgraphLayout(layout = "layout_with_fr") %>% # "layout_nicely" "layout_in_circle"
+      visNetwork(nodes = nodes,edges = edges, height = "100vh", width = "100%") %>%
+        visIgraphLayout(layout = input$layout) %>% # "layout_nicely" "layout_in_circle" "layout_with_fr"
         visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE,
-                   manipulation = TRUE)#, selectedBy = "Phase")
+                   manipulation = TRUE, selectedBy = "group")
 
 
 

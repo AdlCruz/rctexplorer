@@ -80,7 +80,10 @@ ui = fluidPage(
                   fluidRow(column(7,dataTableOutput("arms_table"), offset = 2))
                   ),
                 tabPanel("Network",
-                  fluidRow(column(12, visNetworkOutput("network")))
+                         fluidRow(column(12,selectInput("layout", "Choose a layout type",
+                                                 choices = c("layout_in_circle","layout_with_fr","layout_nicely","layout_as_star","layout_on_sphere","layout_on_grid"),
+                                                 selected = "layout_with_fr"),offset = 1)),
+                  fluidRow(column(12, visNetworkOutput("network"), offset = 1))
                   ),
                 tabPanel("Missing Data",
                          fluidRow(column(1), #missing data plot controls
