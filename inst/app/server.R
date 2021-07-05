@@ -1,6 +1,17 @@
 
 server = function(input, output, session) {
 
+  # Generate data summaries
+  output$summary <- renderPrint({
+    summary(df[input$df_table_rows_all,])
+  })
+  output$str <- renderPrint({
+    str(df)
+  })
+  # Get head of selected data
+  output$snippet <- renderPrint({
+    head(df[input$df_table_rows_all,], n = 15)
+  })
 
     # select deselect reset columns to show
   observe({
@@ -27,20 +38,10 @@ server = function(input, output, session) {
     }
   })
 
-    # Generate data summaries
-    output$summary <- renderPrint({
-        summary(df[input$df_table_rows_all,])
-    })
-    output$str <- renderPrint({
-        str(df)
-    })
-    # Get head of selected data
-    output$snippet <- renderPrint({
-        head(df[input$df_table_rows_all,], n = 15)
-    })
+
 
     # data table output
-    output$df_table <- DT::renderDataTable({
+    output$df_table <- DT::renderDT({
         DT::datatable(
             df[, input$show_vars, drop = FALSE],
             selection = list(target = 'row+column'),
@@ -49,17 +50,105 @@ server = function(input, output, session) {
 
             options = list(
                 lengthMenu = c(10, 50, 100, 200, length(df$NCTId)),
-                pageLength = 10,
+                pageLength = 50,
                 initComplete = JS(
                     "function(settings, json) {",
                     "$(this.api().table().header()).css({'background-color': '#000', 'color': '#fff'});",
                     "}"),
                 dom = 'Blfrtip',
                 buttons = c('copy', 'csv', 'excel', 'pdf'),
+                search = list(regex = TRUE),
                 searchHighlight = TRUE,
                 server = TRUE)
         )
     })
+
+    #net datatable, should be rawest of possible arms tables
+    #
+    arms_table_data <- reactive({
+      armify(df[input$df_table_rows_all,])
+    })
+
+    output$arms_table <- renderDataTable({
+      DT::datatable(arms_table_data(),
+                    selection = list(target = 'row+column'),
+                    filter = 'top',
+                    extensions = "Buttons",
+
+                    options = list(
+                      lengthMenu = c(10, 50, 100, 200, length(df$NCTId)),
+                      pageLength = 50,
+                      initComplete = JS(
+                        "function(settings, json) {",
+                        "$(this.api().table().header()).css({'background-color': '#000', 'color': '#fff'});",
+                        "}"),
+                      dom = 'Blfrtip',
+                      buttons = c('copy', 'csv', 'excel', 'pdf'),
+                      search = list(regex = TRUE),
+                      searchHighlight = TRUE,
+                      server = TRUE))
+    })
+
+
+    network_data <- reactive({
+    # selecting frist two treatments
+    network_data <- armify(df[input$df_table_rows_all,]) %>%
+      select(NCTId,EnrollmentCount, OverallStatus, Phase, IsFDARegulatedDrug, HasResults,label1, label2) %>%
+      filter(!is.na(label2))
+    })
+
+    nodes <- reactive({ #
+      dat <- network_data()
+      nodes <- data.frame( label = unlist(c(dat$label1,dat$label2)),
+                           id = unlist(c(dat$label1,dat$label2)))
+      nodes <- nodes %>% group_by(label,id) %>% summarize(value = n()) %>% ungroup()
+      nodes <- nodes %>% mutate(title = paste0("Appears ", nodes$value," times"))
+    })
+
+    edges <- reactive({
+      dat <- network_data()
+
+      links <- as.data.frame(dat[(ncol(dat)-1):ncol(dat)])
+      links <- cbind(links, dat[1:(ncol(dat)-2)])
+      links$width <- log(as.numeric(links$EnrollmentCount))
+      links$title <- as.character(links$NCTId)
+      links$smooth <- TRUE
+      links <- plyr::rename(links, c("label1"="from", "label2"="to"))
+      return(as.data.frame(links))
+
+    })
+
+
+
+    # #igraph object
+    # g <- graph_from_data_frame(d = links, vertices = nodes, directed = F)
+    # g <- netw_data()
+    # # setting igraph attributes
+    # l <- layout_nicely(g) # with_fr   in_circle
+    #
+    # E(g)$width <- E(g)$EnrollmentCount*0.5
+    #
+    # E(g)$color[E(g)$HasResults == "Yes"] <- "red"
+    # E(g)$color[E(g)$HasResults != "Yes"] <- "grey25"
+    #
+    # plot.igraph(g, vertex.size = 4,
+    #             edge.curved = TRUE,
+    #             layout = l)
+
+
+    output$network <- renderVisNetwork({
+
+      nodes <- nodes()
+      edges <- edges()
+      visNetwork(nodes = nodes,edges = edges, height = "1000px", width = "100%") %>%
+        visIgraphLayout(layout = "layout_with_fr") %>% # "layout_nicely" "layout_in_circle"
+        visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE,
+                   manipulation = TRUE)#, selectedBy = "Phase")
+
+
+
+    })
+
     # PLOTS
     # One variable
     output$univariate_plot <- renderPlot({

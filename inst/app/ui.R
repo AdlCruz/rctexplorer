@@ -17,6 +17,9 @@ ui = fluidPage(
                              column(10, "Data Table", DT::dataTableOutput("df_table"))
                          )
                 ),
+                tabPanel("Data Snippet",verbatimTextOutput("snippet")),
+                tabPanel("Summary",verbatimTextOutput("summary")),
+                tabPanel("Structure",verbatimTextOutput("str")),
                 tabPanel("Plots",
 
                          fluidRow(column(2,h3("Univariate Plots"),h4("Treemap plot"),
@@ -73,9 +76,12 @@ ui = fluidPage(
                                  column(3, plotOutput("scatter_groups")))
                         ), # end of plots tab
 
-                tabPanel("Data Snippet",verbatimTextOutput("snippet")),
-                tabPanel("Summary",verbatimTextOutput("summary")),
-                tabPanel("Structure",verbatimTextOutput("str")),
+                tabPanel("Interventions Table",
+                  fluidRow(column(7,dataTableOutput("arms_table"), offset = 2))
+                  ),
+                tabPanel("Network",
+                  fluidRow(column(12, visNetworkOutput("network")))
+                  ),
                 tabPanel("Missing Data",
                          fluidRow(column(1), #missing data plot controls
                                   column(7,plotOutput("missing_data_plot")),
@@ -85,6 +91,5 @@ ui = fluidPage(
                                                         h3("Plots"),h4("Treemap"),p("Shows frequency of values from a chosen variable."),h4("Stacked barplot"),p("Computes summary of grouped variables chosen by user and shows them in stacked color filled bars."),h4("Scatter plot"),
                                                         p("Introduces the main numeric variable in your dataframe. Individual studies are scattered by their EnrollmentCount and grouped by two chosen variables. This plot is wrapped with 'plotly', making it interactive. Try hovering over the dots, clicking on the legend labels and zooming, selecting and panning around. The menu on the top right also allows download of the displayed plot."),
                                                         h3("Data summaries"),p("'Data Snippet' displays the first 15 observations. Respectively, 'Summary' and 'Structure' display the output from calling summary() and str() functions on the search results."),
-                                                        h3("Missing values"), p(""), offset = 3)))
-                )
+                                                        h3("Missing values"), p(""), offset = 3))))
     ))

@@ -23,4 +23,7 @@ Depends:
     naniar,
     stats,
     purrr,
-    tidyr
+    tidyr,
+    splitstackshape,
+    visNetwork,
+    igraph
