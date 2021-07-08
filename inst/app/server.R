@@ -66,7 +66,8 @@ server = function(input, output, session) {
     #net datatable, should be rawest of possible arms tables
     #
     arms_table_data <- reactive({
-      armify(df[input$df_table_rows_all,])
+      arms <- to_arms(df[input$df_table_rows_all,])
+      wide_arms <- to_wide_arms(arms)
     })
 
     output$arms_table <- renderDataTable({
@@ -89,29 +90,21 @@ server = function(input, output, session) {
                       server = TRUE))
     })
 
-
+    # DATA FOR NETWORK
     network_data <- reactive({
-    # selecting frist two treatments
-    network_data <- armify(df[input$df_table_rows_all,]) %>%
-      select(NCTId,EnrollmentCount, OverallStatus, Phase, IsFDARegulatedDrug, HasResults,label1, label2) %>%
-      filter(!is.na(label2))
-    })
 
-    nodes <- reactive({ #
-      dat <- network_data()
-      nodes <- data.frame( label = unlist(c(dat$label1,dat$label2)),
-                           id = unlist(c(dat$label1,dat$label2)))
-      nodes <- nodes %>% group_by(label,id) %>% summarize(value = n()) %>% ungroup()
-      nodes <- nodes %>% mutate(title = paste0("Appears ", nodes$value," times"))
-      nodes$group <- group_str(nodes$label, precision = 3, strict = FALSE, remove.empty = FALSE)
-      return(as.data.frame(nodes))
+    network_data <- to_arms(df[input$df_table_rows_all,])
+
     })
 
     edges <- reactive({
-      dat <- network_data()
 
-      links <- as.data.frame(dat[(ncol(dat)-1):ncol(dat)])
-      links <- cbind(links, dat[1:(ncol(dat)-2)])
+      arms <- network_data()
+      edges <- to_edges(arms)
+
+      links <- as.data.frame(edges[,(ncol(edges)-1):ncol(edges)])
+      links <- cbind(links, edges[1:(ncol(edges)-2)])
+
       links$width <- log(as.numeric(links$EnrollmentCount))
       links$title <- paste0("<p>",as.character(links$NCTId),"</p>",
                             "<p>","n",as.character(links$EnrollmentCount),"</p>",
@@ -119,27 +112,18 @@ server = function(input, output, session) {
                             "<p>",as.character(links$OverallStatus),"</p>",
                             "<p>","Results",as.character(links$HasResults),"</p>")
       links$smooth <- TRUE
-      links <- plyr::rename(links, c("label1"="from", "label2"="to"))
       return(as.data.frame(links))
 
     })
 
+    nodes <- reactive({ #
 
+      arms <- network_data()
+      edges <- to_edges(arms)
+      nodes <- to_nodes(edges)
+      return(as.data.frame(nodes))
 
-    # #igraph object
-    # g <- graph_from_data_frame(d = links, vertices = nodes, directed = F)
-    # g <- netw_data()
-    # # setting igraph attributes
-    # l <- layout_nicely(g) # with_fr   in_circle
-    #
-    # E(g)$width <- E(g)$EnrollmentCount*0.5
-    #
-    # E(g)$color[E(g)$HasResults == "Yes"] <- "red"
-    # E(g)$color[E(g)$HasResults != "Yes"] <- "grey25"
-    #
-    # plot.igraph(g, vertex.size = 4,
-    #             edge.curved = TRUE,
-    #             layout = l)
+    })
 
 
     output$network <- renderVisNetwork({
@@ -147,7 +131,7 @@ server = function(input, output, session) {
       nodes <- nodes()
       edges <- edges()
       visNetwork(nodes = nodes,edges = edges, height = "100vh", width = "100%") %>%
-        visIgraphLayout(layout = input$layout) %>% # "layout_nicely" "layout_in_circle" "layout_with_fr"
+        visIgraphLayout(layout = input$layout) %>%
         visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE,
                    manipulation = TRUE, selectedBy = "group")
 
@@ -159,7 +143,7 @@ server = function(input, output, session) {
     # One variable
     output$univariate_plot <- renderPlot({
 
-        tree_dat <- df[input$df_table_rows_all,] %>% group_by(across(input$treemap_var)) %>% summarise(n = n())
+        tree_dat <- df[input$df_table_rows_all,] %>% group_by(across(input$treemap_var)) %>% dplyr::summarise(n = n())
 
         treemap(tree_dat,
                 index=input$treemap_var,
@@ -176,7 +160,7 @@ server = function(input, output, session) {
 
     output$univariate_table <- renderDataTable({
 
-        uni_dat <- df[input$df_table_rows_all,] %>% group_by(across(input$treemap_var)) %>% summarise(n = n()) %>%
+        uni_dat <- df[input$df_table_rows_all,] %>% group_by(across(input$treemap_var)) %>% dplyr::summarise(n = n()) %>%
           mutate("%"  = round(n*100/sum(n),2))
         datatable(uni_dat)
 
@@ -187,14 +171,12 @@ server = function(input, output, session) {
     biv_data <- reactive({
 
       biv_data <- df[input$df_table_rows_all,] %>% group_by(across(.cols = c(input$biv_1, input$biv_2))) %>%
-          summarise(n = n())  %>% arrange(desc(n)) %>% ungroup()
+          dplyr::summarise(n = n())  %>% arrange(desc(n)) %>% ungroup()
 
       if (input$filter_nas == "Hide") {na.omit(biv_data,c(input$biv_1))} else {biv_data}
 
 
     })
-
-
 
     #plot
     output$bivariate_plot <- renderPlot({
@@ -249,7 +231,8 @@ server = function(input, output, session) {
           filter(EnrollmentCount <= input$sliderEnrollment[2] & EnrollmentCount >= input$sliderEnrollment[1]) %>%
             ggplot(aes_string(x = "EnrollmentCount",
                               y = input$scatter_group,
-                              color = input$scatter_colour))+
+                              color = input$scatter_colour,
+                              label = "NCTId"))+
             geom_point(position = "jitter", inherit.aes = T)+
           # can add more things for tooltip with aes(text = ?
             scale_y_discrete(label=abbreviate) +
@@ -262,14 +245,14 @@ server = function(input, output, session) {
                 panel.grid.major = element_line(colour = "grey")
                 )
 
-        ggplotly(p, height = 650, tooltip = c("x","y",input$scatter_colour))
+        ggplotly(p, height = 650, tooltip = c("x","y",input$scatter_colour, "label"))
 
     })
 
     output$scatter_groups <- renderPlot({
 
       scatt_dat <- df[input$df_table_rows_all,] %>% group_by(across(.cols = c(input$scatter_colour))) %>%
-        summarise(n = n())
+        dplyr::summarise(n = n())
 
       ggplot(scatt_dat, aes_string(x = input$scatter_colour,
                                    y = "n", fill = input$scatter_colour,  label = "n")) +
@@ -323,6 +306,7 @@ server = function(input, output, session) {
 
       theme_light()+
       theme(
+        text = element_text(size = 13),
         legend.position = "none",
         panel.border = element_blank()
       )+
@@ -331,7 +315,7 @@ server = function(input, output, session) {
     p
 
 
-    }, height = 600)
+    }, height = 650)
   output$missing_data_table <- renderDataTable({
 
     na_data() %>% arrange(desc(Missing))

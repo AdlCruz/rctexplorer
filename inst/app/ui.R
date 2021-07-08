@@ -14,7 +14,7 @@ ui = fluidPage(
                                         checkboxGroupInput("show_vars","Columns to show:",names(df),selected_cols)
                                     )
                              ),
-                             column(10, "Data Table", DT::dataTableOutput("df_table"))
+                             column(10, DT::dataTableOutput("df_table"))
                          )
                 ),
                 tabPanel("Data Snippet",verbatimTextOutput("snippet")),
