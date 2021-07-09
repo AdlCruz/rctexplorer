@@ -15,6 +15,7 @@ Depends:
     shinydashboard,
     rctapi,
     dplyr,
+    plyr,
     DT,
     ggplot2,
     treemap,
