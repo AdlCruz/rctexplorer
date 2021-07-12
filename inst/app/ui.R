@@ -1,4 +1,5 @@
 
+enrolled <- df$EnrollmentCount[which(!is.na(df$EnrollmentCount))]
 
 
 
