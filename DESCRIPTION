@@ -9,11 +9,7 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
-Depends: 
-    R (>= 2.10),
-    shiny,
-    shinydashboard,
-    rctapi,
+Imports:
     plyr,
     dplyr,
     DT,
@@ -29,3 +25,9 @@ Depends:
     visNetwork,
     igraph,
     sjmisc
+Depends: 
+    R (>= 2.10),
+    shiny,
+    shinydashboard,
+    rctapi,
+    
