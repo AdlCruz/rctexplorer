@@ -1,6 +1,7 @@
 
 server = function(input, output, session) {
 
+###############################################################################
   # Generate data summaries
   output$summary <- renderPrint({
     summary(df[input$df_table_rows_all,])
@@ -12,7 +13,8 @@ server = function(input, output, session) {
   output$snippet <- renderPrint({
     head(df[input$df_table_rows_all,], n = 15)
   })
-
+###############################################################################
+  # STUDIES DATATABLE
     # select deselect reset columns to show
   observe({
     if (input$select_all > 0) {
@@ -34,7 +36,7 @@ server = function(input, output, session) {
     if (input$reset > 0) {
       updateCheckboxGroupInput(session=session, inputId="show_vars",
                                choices = c(names(df)),
-                              selected = selected_cols)
+                              selected = c("NCTId","Acronym","StudyType","OverallStatus","LeadSponsorName"))
     }
   })
 
@@ -62,16 +64,51 @@ server = function(input, output, session) {
                 server = TRUE)
         )
     })
+###############################################################################
+    # ARMS DATA TABLE
 
-    #net datatable, should be rawest of possible arms tables
-    #
     arms_table_data <- reactive({
       arms <- to_arms(df[input$df_table_rows_all,])
       wide_arms <- to_wide_arms(arms)
     })
 
+    colnames <- reactive ({ names(arms_table_data() )})
+
+    observeEvent(arms_table_data(),{
+      updateCheckboxGroupInput(session=session, inputId="show_vars_2",
+                               choices = colnames(),
+                               selected = c("NCTId","Acronym","LeadSponsorName","Phase", "label1", "label2", "label3", "label4"))
+    })
+
+    # select deselect reset columns to show
+    observe({
+      if (input$select_all_2 > 0) {
+        if (input$select_all_2 %% 2 == 0){
+          updateCheckboxGroupInput(session=session, inputId="show_vars_2",
+                                   choices = colnames(),
+                                   selected = colnames())
+
+        }
+        else {
+          updateCheckboxGroupInput(session=session, inputId="show_vars_2",
+                                   choices = colnames(),
+                                   selected = "")
+
+        }}
+    })
+
+    observe({
+      if (input$reset_2 > 0) {
+        updateCheckboxGroupInput(session=session, inputId="show_vars_2",
+                                 choices = colnames(),
+                                 selected = c("NCTId","Acronym","LeadSponsorName","Phase", "label1", "label2", "label3", "label4"))
+      }
+    })
+
     output$arms_table <- renderDataTable({
-      DT::datatable(arms_table_data(),
+
+
+      DT::datatable(arms_table_data()[,input$show_vars_2, drop = FALSE],
                     selection = list(target = 'row+column'),
                     filter = 'top',
                     extensions = "Buttons",
@@ -90,10 +127,11 @@ server = function(input, output, session) {
                       server = TRUE))
     })
 
+################################################################################
     # DATA FOR NETWORK
     network_data <- reactive({
 
-    network_data <- to_arms(df[input$df_table_rows_all,])
+    network_data <- to_arms(df[input$arms_table_rows_all,])
 
     })
 
@@ -102,15 +140,15 @@ server = function(input, output, session) {
       arms <- network_data()
       edges <- to_edges(arms)
 
-      links <- as.data.frame(edges[,(ncol(edges)-1):ncol(edges)])
-      links <- cbind(links, edges[1:(ncol(edges)-2)])
+      links <- edges %>% dplyr::group_by(from, to) %>% dplyr::summarise(across(.fns = toString), width = n())
 
-      links$width <- log(as.numeric(links$EnrollmentCount))
-      links$title <- paste0("<p>",as.character(links$NCTId),"</p>",
-                            "<p>","n",as.character(links$EnrollmentCount),"</p>",
-                            "<p>",as.character(links$Phase),"</p>",
-                            "<p>",as.character(links$OverallStatus),"</p>",
-                            "<p>","Results",as.character(links$HasResults),"</p>")
+      links$label <- paste0("n ", as.character(links$width))
+
+      links$title <- paste0("<p>",as.character(links$NCTId),"</p>")#,
+      #                       "<p>","n ",as.character(links$EnrollmentCount),"</p>",
+      #                       "<p>",as.character(links$Phase),"</p>",
+      #                       "<p>",as.character(links$OverallStatus),"</p>",
+      #                       "<p>","Results",as.character(links$HasResults),"</p>")
       links$smooth <- TRUE
       return(as.data.frame(links))
 
@@ -138,7 +176,7 @@ server = function(input, output, session) {
 
 
     })
-
+################################################################################
     # PLOTS
     # One variable
     output$univariate_plot <- renderPlot({

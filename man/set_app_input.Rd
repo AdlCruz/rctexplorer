@@ -4,7 +4,7 @@
 \alias{set_app_input}
 \title{Set Input for Data Explorer}
 \usage{
-set_app_input(search_expr, fields = for_explorer, max_studies = 500)
+set_app_input(search_expr, fields = for_explorer, max_studies = 600)
 }
 \arguments{
 \item{search_expr}{A string following the querying guidelines at

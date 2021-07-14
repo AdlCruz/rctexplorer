@@ -11,7 +11,9 @@ ui = fluidPage(
                              column(2,
                                     wellPanel(actionButton("select_all", label="All/None"),
                                               actionButton("reset", label="Reset"),
-                                        checkboxGroupInput("show_vars","Columns to show:",names(df),selected_cols)
+                                        checkboxGroupInput("show_vars","Columns to show:",
+                                                           choices = names(df),
+                                                           selected = c("NCTId","Acronym","StudyType","OverallStatus","LeadSponsorName"))
                                     )
                              ),
                              column(10, DT::dataTableOutput("df_table"))
@@ -77,7 +79,16 @@ ui = fluidPage(
                         ), # end of plots tab
 
                 tabPanel("Interventions Table",
-                  fluidRow(column(7,dataTableOutput("arms_table"), offset = 2))
+                  fluidRow(
+                    column(2,
+                           wellPanel(actionButton("select_all_2", label="All/None"),
+                                     actionButton("reset_2", label="Reset"),
+                                     checkboxGroupInput("show_vars_2","Columns to show:",
+                                                        choices = c("Please click Reset"), # is insta updated to show right ui
+                                                        selected = c("NCTId","Acronym","StudyType","OverallStatus","LeadSponsorName"))
+                           )
+                    ),
+                    column(10,dataTableOutput("arms_table")))
                   ),
                 tabPanel("Network",
                          fluidRow(column(12,selectInput("layout", "Choose a layout type",

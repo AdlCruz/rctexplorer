@@ -4,6 +4,7 @@
 age_cols <- c("MinimumAge","MaximumAge")
 
 fct_cols <- c(
+  "Acronym",
   "AgreementRestrictionType",
   "ArmGroupType",
   "AvailIPDType",
@@ -50,6 +51,7 @@ fct_cols <- c(
   "IsUnapprovedDevice",
 
   "LastUpdatePostDateType",
+  "LeadSponsorName",
 
   "LeadSponsorClass",
 
@@ -112,14 +114,13 @@ fct_cols <- c(
   "AgeRange",
   "HealthyVolunteers",
   "OversightHasDMC",
-  "HasResults")
+  "HasResults",
+  "AgeRange")
 
 
 date_cols <- c("StartDate","CompletionDate")
 
-selected_cols <- c("NCTId","StudyType","OverallStatus","StartDate",
-                   "CompletionDate","Condition","Phase","EnrollmentCount","ArmGroupType","InterventionType",
-                   "InterventionMeshTerm","Gender","AgeRange","HealthyVolunteers")
 
-usethis::use_data(age_cols,fct_cols,date_cols,selected_cols, internal = T, overwrite = T)
+
+#usethis::use_data(age_cols,fct_cols,date_cols, internal = T, overwrite = T)
 
