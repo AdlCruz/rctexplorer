@@ -20,7 +20,7 @@
 
 set_app_input <- function (search_expr,
                            fields = for_explorer,
-                           max_studies = 500) {
+                           max_studies = 600) {
 
   df <- rctapi::get_study_fields(search_expr,fields, max_studies)
 

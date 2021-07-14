@@ -14,6 +14,3 @@ Takes data frame with studies restults and returns dataframe with one row per st
 and one intervention per column
 to_wide_arms()
 }
-\examples{
-to_wide_arms(df)
-}

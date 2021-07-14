@@ -11,10 +11,5 @@ to_arms(df)
 }
 \description{
 Takes data frame with studies restults and returns dataframe with one row per arm
-}
-\details{
 to_arms()
-}
-\examples{
-to_arms(df)
 }

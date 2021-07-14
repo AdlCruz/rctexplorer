@@ -13,6 +13,3 @@ to_nodes(edges)
 Takes data frame with edges and extracts a node dataframe
 to_nodes(edges)
 }
-\examples{
-to_nodes(edges)
-}

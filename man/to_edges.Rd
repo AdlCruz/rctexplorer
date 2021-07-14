@@ -13,6 +13,3 @@ to_edges(long_arms)
 Takes long arms data frame and returns edges
 to_edges(df)
 }
-\examples{
-to_edges(df))
-}
