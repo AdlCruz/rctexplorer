@@ -3,8 +3,8 @@
 #' Takes data frame with edges and extracts a node dataframe
 #' to_nodes(edges)
 #' @param df a dataframe to manipulate
-#' @examples
 #' @export
+#' @examples
 #' to_nodes(edges)
 
 to_nodes <- function(edges) {

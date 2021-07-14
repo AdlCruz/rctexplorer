@@ -3,8 +3,8 @@
 #' Takes data frame with studies restults and returns dataframe with one row per arm
 #' to_arms()
 #' @param df a dataframe to manipulate
-#' @examples
 #' @export
+#' @examples
 #' to_arms(df)
 #'
 to_arms <- function(df) {

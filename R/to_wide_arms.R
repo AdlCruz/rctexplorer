@@ -4,8 +4,8 @@
 #' and one intervention per column
 #' to_wide_arms()
 #' @param df a dataframe to manipulate
-#' @examples
 #' @export
+#' @examples
 #' to_wide_arms(df)
 
 
