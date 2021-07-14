@@ -4,6 +4,7 @@
 #' to_nodes(edges)
 #' @param df a dataframe to manipulate
 #' @examples
+#' @export
 #' to_nodes(edges)
 
 to_nodes <- function(edges) {

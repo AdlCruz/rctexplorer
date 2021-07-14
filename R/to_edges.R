@@ -4,6 +4,7 @@
 #' to_edges(df)
 #' @param df a long dataframe of arms
 #' @examples
+#' @export
 #' to_edges(df))
 
 to_edges <- function(long_arms) {

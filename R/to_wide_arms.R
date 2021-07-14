@@ -5,12 +5,13 @@
 #' to_wide_arms()
 #' @param df a dataframe to manipulate
 #' @examples
+#' @export
 #' to_wide_arms(df)
 
 
 to_wide_arms <- function(long_arms) {
-    
+
     remake_wide <- pivot_wider(long_arms, names_from = name, values_from = value)
-    
+
     return(remake_wide)
 }
