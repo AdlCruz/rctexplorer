@@ -1,3 +1,6 @@
+selected_cols <- c("NCTId","StudyType","OverallStatus","StartDate",
+                   "CompletionDate","Condition","Phase","EnrollmentCount","ArmGroupType","InterventionType",
+                   "InterventionMeshTerm","Gender","AgeRange","HealthyVolunteers")
 
 server = function(input, output, session) {
 
