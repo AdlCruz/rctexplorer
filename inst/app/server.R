@@ -108,6 +108,7 @@ server = function(input, output, session) {
       }
     })
 
+
     output$arms_table <- renderDataTable({
 
 
@@ -134,8 +135,8 @@ server = function(input, output, session) {
     # DATA FOR NETWORK
     network_data <- reactive({
 
-    network_data <- to_arms(df[input$arms_table_rows_all,])
-
+    network_data <- to_arms(df[input$df_table_rows_all,])
+    return(network_data)
     })
 
     edges <- reactive({
