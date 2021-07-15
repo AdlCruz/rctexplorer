@@ -72,10 +72,11 @@ server = function(input, output, session) {
 
     arms_table_data <- reactive({
       arms <- to_arms(df[input$df_table_rows_all,])
-      wide_arms <- to_wide_arms(arms)
+      wide_arms <- to_wide_arms(df[input$df_table_rows_all,])
+      return(list(arms,wide_arms))
     })
 
-    colnames <- reactive ({ names(arms_table_data() )})
+    colnames <- reactive ({ names(arms_table_data()[[2]] )})
 
     observeEvent(arms_table_data(),{
       updateCheckboxGroupInput(session=session, inputId="show_vars_2",
@@ -112,7 +113,7 @@ server = function(input, output, session) {
     output$arms_table <- renderDataTable({
 
 
-      DT::datatable(arms_table_data()[,input$show_vars_2, drop = FALSE],
+      DT::datatable(arms_table_data()[[2]][,input$show_vars_2, drop = FALSE],
                     selection = list(target = 'row+column'),
                     filter = 'top',
                     extensions = "Buttons",
@@ -135,7 +136,9 @@ server = function(input, output, session) {
     # DATA FOR NETWORK
     network_data <- reactive({
 
-    network_data <- to_arms(df[input$df_table_rows_all,])
+    network_data <- arms_table_data()[[1]]
+
+
     return(network_data)
     })
 

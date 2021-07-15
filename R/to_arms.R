@@ -24,10 +24,12 @@ to_arms <- function(df) {
   long_arms$value <- tolower(long_arms$value)
   long_arms$value <- gsub(".*: ","",long_arms$value) # remove chars before colon
   long_arms$value <- gsub("[0-9]+.mg","",long_arms$value) # remove dosage
+  long_arms$value <- gsub("q2w|q4w|q8w","",long_arms$value) # remove timeframe
   long_arms$value <- gsub("\\(\\)","",long_arms$value) # remove empty parenthesis
-  long_arms$value <- ifelse(grepl("placebo.(for.|to.)",long_arms$value),"placebo",long_arms$value) # subst for or to placebo to just placebo
-  long_arms$value <- trimws(long_arms$value) # trim whitespace
+  long_arms$value <- ifelse(grepl("placebo.(for.|to.)",long_arms$value),"PBO",long_arms$value) # subst for or to placebo to just placebo
   long_arms$value <- ifelse(grepl("placebo",long_arms$value),"PBO",long_arms$value)
+  long_arms$value <- trimws(long_arms$value) # trim whitespace
+
   return(long_arms)
 
 }

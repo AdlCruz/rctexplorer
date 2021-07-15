@@ -4,7 +4,7 @@
 \alias{to_wide_arms}
 \title{To Interventions Table}
 \usage{
-to_wide_arms(long_arms)
+to_wide_arms(df)
 }
 \arguments{
 \item{df}{a dataframe to manipulate}

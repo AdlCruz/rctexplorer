@@ -9,7 +9,24 @@
 #' to_wide_arms(df)
 
 
-to_wide_arms <- function(long_arms) {
+to_wide_arms <- function(df) {
+
+
+    af <- df %>% filter(!is.na(ArmGroupInterventionName))
+
+    lab_names <- paste("label",seq(1:50),sep = "")
+
+    bf <- af %>% separate( col = ArmGroupInterventionName,
+                         into = lab_names, sep = '\\|',
+                         remove = TRUE, extra = "merge", fill = "right",
+                         convert = TRUE )
+
+    long_arms<- bf %>% pivot_longer(starts_with("label",ignore.case = FALSE),
+                                  values_drop_na = T)
+
+    long_arms$value <- ifelse(grepl("placebo.(for.|to.)",long_arms$value),"PBO",long_arms$value) # subst for or to placebo to just placebo
+    long_arms$value <- ifelse(grepl("placebo",long_arms$value),"PBO",long_arms$value)
+    long_arms$value <- trimws(long_arms$value) # trim whitespace
 
     remake_wide <- pivot_wider(long_arms, names_from = name, values_from = value)
 
