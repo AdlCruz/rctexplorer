@@ -175,8 +175,13 @@ server = function(input, output, session) {
 
       nodes <- nodes()
       edges <- edges()
+
       visNetwork(nodes = nodes,edges = edges, height = "100vh", width = "100%") %>%
+
+        visNodes( shape = "diamond") %>% # ,"triangle","dot"
+
         visIgraphLayout(layout = input$layout) %>%
+
         visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE,
                    manipulation = TRUE, selectedBy = "group")
 

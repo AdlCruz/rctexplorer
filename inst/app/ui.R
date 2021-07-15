@@ -1,9 +1,7 @@
 
 enrolled <- df$EnrollmentCount[which(!is.na(df$EnrollmentCount))]
 
-selected_cols <- c("NCTId","StudyType","OverallStatus","StartDate",
-                   "CompletionDate","Condition","Phase","EnrollmentCount","ArmGroupType","InterventionType",
-                   "InterventionMeshTerm","Gender","AgeRange","HealthyVolunteers")
+
 
 
 ui = fluidPage(
@@ -96,7 +94,9 @@ ui = fluidPage(
                   ),
                 tabPanel("Network",
                          fluidRow(column(12,selectInput("layout", "Choose a layout type",
-                                                 choices = c("layout_in_circle","layout_with_fr","layout_nicely","layout_as_star","layout_on_sphere","layout_on_grid"),
+                                                 choices = c("layout_in_circle","layout_with_fr","layout_nicely",
+                                                             "layout_as_star","layout_on_sphere","layout_on_grid",
+                                                             "layout_with_gem","layout_with_sugiyama","layout_as_tree"),
                                                  selected = "layout_with_fr"),offset = 1)),
                   fluidRow(column(12, visNetworkOutput("network"), offset = 1))
                   ),
