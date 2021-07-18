@@ -122,7 +122,7 @@ ui = fluidPage(
 
                                                         p(strong("Missing Data")," : Shows number of missing values for each variable present in the filtered dataframe"),
 
-                                                        br(),
+                                                        # there was a br() here
 
                                                         h3(strong("Filtering")),
                                                         p("Filtering implemented on the main data table will be carried on to all other instances of the data used in the application. At startup the Data Table tab will display only a few columns. More columns can be toggled on via the checkbox. The boxes atop of each column and the global search bar both understand regex expressions.\n
