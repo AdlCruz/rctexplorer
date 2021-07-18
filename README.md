@@ -1,5 +1,5 @@
 # rctexplorer
-Currently functional. Pkg in development. Install with ```devtools::install_github("AdlCruz/rctexplorer")```--
+Currently functional. Pkg in development. Install with ```devtools::install_github("AdlCruz/rctexplorer")```
 
 This package contains an R Shiny application that allows the user to explore a dataframe of studies downloaded from clinicaltrials.gov. 
 
