@@ -22,6 +22,7 @@ to_edges <- function(long_arms) {
       combi <- t(combn(unique_trts$value,2))
       sorted_combi <- t(apply(combi,1,sort))
       othr_vars <- unique_trts[1:length(sorted_combi[1]),1:(ncol(unique_trts)-2)]
+      othr_vars$n_trts <- length(unique_trts$NCTId)
       cmplt_combi <- cbind(sorted_combi,othr_vars)
       tib_df <- rbind(tib_df,cmplt_combi)
     }
