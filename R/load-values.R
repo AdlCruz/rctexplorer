@@ -1,111 +1,70 @@
 
 # variables to manipulate in set_app_input()
 
-age_cols <- c("MinimumAge","MaximumAge")
+age_cols <- c("MinimumAge",
+              "MaximumAge")
 
 fct_cols <- c(
-  "Acronym",
   "AgreementRestrictionType",
   "ArmGroupType",
   "AvailIPDType",
   "BaselineDenomUnits",
   "BaselineMeasureDispersionType",
   "BaselineMeasureParamType",
-
   "CompletionDateType",
-  "ConditionMeshId",
-  "ConditionMeshTerm",
   "DelayedPosting",
   "DesignAllocation",
   "DesignInterventionModel",
-
   "DesignMasking",
-
   "DesignPrimaryPurpose",
-  "DesignTimePerspective",
   "DesignWhoMasked",
-
-  "DispFirstPostDate",
   "DispFirstPostDateType",
-  "DispFirstSubmitDate",
   "DispFirstSubmitQCDate",
-
   "EnrollmentType",
-
   "FDAAA801Violation",
-
   "Gender",
   "GenderBased",
   "HasExpandedAccess",
   "HealthyVolunteers",
   "IPDSharing",
-
-  "InterventionMeshId",
-  "InterventionMeshTerm",
-
   "InterventionType",
   "IsFDARegulatedDevice",
   "IsFDARegulatedDrug",
   "IsPPSD",
   "IsUSExport",
   "IsUnapprovedDevice",
-
   "LastUpdatePostDateType",
-  "LeadSponsorName",
-
   "LeadSponsorClass",
-
   "LocationCity",
-
   "LocationCountry",
-
   "LocationState",
   "LocationStatus",
-
   "MaximumAge",
   "MinimumAge",
-
   "OutcomeAnalysisDispersionType",
-
   "OutcomeAnalysisNonInferiorityType",
-
   "OutcomeAnalysisParamType",
-
   "OutcomeMeasureDispersionType",
   "OutcomeMeasureParamType",
-
   "OutcomeMeasureReportingStatus",
-
   "OutcomeMeasureType",
   "OutcomeMeasureTypeUnitsAnalyzed",
   "OutcomeMeasureUnitOfMeasure",
-
   "OverallOfficialAffiliation",
-
   "OverallStatus",
   "OversightHasDMC",
   "PatientRegistry",
   "Phase",
-
   "PrimaryCompletionDateType",
-
-
   "ReferenceType",
-
   "ResponsiblePartyType",
-
   "ResultsFirstPostDateType",
-
   "StartDateType",
-
   "StudyFirstPostDateType",
-
   "StudyPopulation",
   "StudyType",
   "TargetDuration",
-
   "UnpostedEventType",
-
   "VersionHolder",
   "WhyStopped",
   "Condition",
@@ -115,10 +74,12 @@ fct_cols <- c(
   "HealthyVolunteers",
   "OversightHasDMC",
   "HasResults",
-  "AgeRange")
+  "AgeRange"
+)
 
 
-date_cols <- c("StartDate","CompletionDate")
+date_cols <- c("StartDate",
+               "CompletionDate")
 
 
 
