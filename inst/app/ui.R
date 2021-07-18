@@ -96,7 +96,7 @@ ui = fluidPage(
                          fluidRow(column(12,selectInput("layout", "Choose a layout type",
                                                  choices = c("layout_in_circle","layout_with_fr","layout_nicely",
                                                              "layout_as_star","layout_on_sphere","layout_on_grid",
-                                                             "layout_with_gem","layout_with_sugiyama","layout_as_tree"),
+                                                             "layout_with_gem","layout_with_sugiyama"),
                                                  selected = "layout_with_fr"),offset = 1)),
                   fluidRow(column(12, visNetworkOutput("network"), offset = 1))
                   ),
@@ -105,9 +105,32 @@ ui = fluidPage(
                                   column(7,plotOutput("missing_data_plot")),
                                   column(4,dataTableOutput("missing_data_table")))),
                 tabPanel("?", mainPanel(fluidRow(column(12,h3("Welcome to rctexplorer"),
-                                                        h3("Data Table"),p("The Data Table tab displays the dataframe entered into the application through the launcher function. By default, the list of fields is 'for_explorer' from 'rctapi' paired with your search expression. Boxes at the top of each column show the categories held and alllow filtering. The dispalyed table can be copied or downloaded as csv excel or pdf."),
-                                                        h3("Plots"),h4("Treemap"),p("Shows frequency of values from a chosen variable."),h4("Stacked barplot"),p("Computes summary of grouped variables chosen by user and shows them in stacked color filled bars."),h4("Scatter plot"),
-                                                        p("Introduces the main numeric variable in your dataframe. Individual studies are scattered by their EnrollmentCount and grouped by two chosen variables. This plot is wrapped with 'plotly', making it interactive. Try hovering over the dots, clicking on the legend labels and zooming, selecting and panning around. The menu on the top right also allows download of the displayed plot."),
-                                                        h3("Data summaries"),p("'Data Snippet' displays the first 15 observations. Respectively, 'Summary' and 'Structure' display the output from calling summary() and str() functions on the search results."),
-                                                        h3("Missing values"), p(""), offset = 3))))
+
+                                                        hr(),br(),
+
+                                                        h3(strong("Tabs Overview:")),
+
+                                                        p(strong("Data Table")," : The dataframe entered into the application through the launcher function. Boxes at the top of each column show the categories held when possible and alllow filtering."),
+
+                                                        p(strong("Data summaries"), ": 'Data Snippet' displays the first 15 observations in the dataframe. 'Summary' and 'Structure' display the output from calling summary() and str() functions on the dataframe"),
+
+                                                        p(strong("Plots")," : Show frequency of chosen grouped variables and studies by number of participants enrolled."),
+
+                                                        p(strong("Interventions Table")," : Table showing one study per row with a column for each of its intervention arms (split from var. 'ArmGroupInterventionName')"),
+
+                                                        p(strong("Network")," : Network plot of interventions for filtered studies"),
+
+                                                        p(strong("Missing Data")," : Shows number of missing values for each variable present in the filtered dataframe"),
+
+                                                        br(),
+
+                                                        h3(strong("Filtering")),
+                                                        p("Filtering implemented on the main data table will be carried on to all other instances of the data used in the application. At startup the Data Table tab will display only a few columns. More columns can be toggled on via the checkbox. The boxes atop of each column and the global search bar both understand regex expressions.\n
+Warning: all filtering resets when columns are toggled on/off."),
+
+                                                        h3(strong("Interactivity")),
+                                                        p("Most tabs have a degree of interactivty.\n The data table tab includes download buttons. The variables plotted are changeable as are some features of the plot (e.g hide/show NAs values). The scatter plot is wrapped in a plotly function, allowing for zooming, panning and filtering by clicking on the plot and legend. The network graph is implemented with visNetwork and also includes interactive features such as dragging, creating, and removing nodes."),
+
+                                                        h3(strong("Useful links")),
+                                                        (a("https://clinicaltrials.gov/api/gui")), offset = 3))))
     ))
