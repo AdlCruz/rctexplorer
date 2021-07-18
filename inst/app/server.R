@@ -151,11 +151,11 @@ server = function(input, output, session) {
 
       links$label <- paste0("n ", as.character(links$width))
 
-      links$title <- paste0("<p>",as.character(links$NCTId),"</p>")#,
-      #                       "<p>","n ",as.character(links$EnrollmentCount),"</p>",
+      links$title <- paste0("<p>",as.character(links$NCTId),"</p>",
+                            "<p>",as.character(links$Acronym),"</p>",
       #                       "<p>",as.character(links$Phase),"</p>",
       #                       "<p>",as.character(links$OverallStatus),"</p>",
-      #                       "<p>","Results",as.character(links$HasResults),"</p>")
+                             "<p>","Results ",as.character(links$HasResults),"</p>")
       links$smooth <- TRUE
       return(as.data.frame(links))
 
