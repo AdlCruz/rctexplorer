@@ -106,7 +106,7 @@ ui = fluidPage(
                                   column(4,dataTableOutput("missing_data_table")))),
                 tabPanel("?", mainPanel(fluidRow(column(12,h3("Welcome to rctexplorer"),
 
-                                                        hr(),br(),
+                                                        hr(),
 
                                                         h3(strong("Tabs Overview:")),
 
@@ -125,12 +125,19 @@ ui = fluidPage(
                                                         # there was a br() here
 
                                                         h3(strong("Filtering")),
-                                                        p("Filtering implemented on the main data table will be carried on to all other instances of the data used in the application. At startup the Data Table tab will display only a few columns. More columns can be toggled on via the checkbox. The boxes atop of each column and the global search bar both understand regex expressions.\n
+                                                        p("Filtering implemented on the main data table will be carried on to all other instances of the data used in the application. At startup the Data Table tab will display only a few columns. More columns can be toggled on via the checkbox. The boxes atop of each column and the global search bar both understand regular expressions.\n
 Warning: all filtering resets when columns are toggled on/off."),
+                                                        p(strong("Useful regular expression templates\n")),
+                                                        p("^(?!word|otherword).*$ This is a negative lookahead and will exlcude all words between ! and ). The bar works as an alternate symbol."),
+                                                        p("(?=[abcdefgh]).*$ This is a positive lookahead and will include any results with any of the characters inside the brackets."),
+
 
                                                         h3(strong("Interactivity")),
                                                         p("Most tabs have a degree of interactivty.\n The data table tab includes download buttons. The variables plotted are changeable as are some features of the plot (e.g hide/show NAs values). The scatter plot is wrapped in a plotly function, allowing for zooming, panning and filtering by clicking on the plot and legend. The network graph is implemented with visNetwork and also includes interactive features such as dragging, creating, and removing nodes."),
 
                                                         h3(strong("Useful links")),
-                                                        (a("https://clinicaltrials.gov/api/gui")), offset = 3))))
+                                                        p(a("https://clinicaltrials.gov/api/gui")),
+                                                        p(a("https://regex101.com/")),
+                                                         offset = 3))))
     ))
+
