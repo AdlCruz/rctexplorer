@@ -48,7 +48,7 @@ server = function(input, output, session) {
     # data table output
     output$df_table <- DT::renderDT({
         DT::datatable(
-            df[, input$show_vars, drop = FALSE],
+            df[,input$show_vars, drop = FALSE],
             selection = list(target = 'row+column'),
             filter = 'top',
             extensions = "Buttons",
@@ -346,25 +346,7 @@ server = function(input, output, session) {
 
   })
 
-  na_by_study <- reactive({
 
-    na_by_study <- as.data.frame(t(df[input$df_table_rows_all,]))
-
-    colnames(na_by_study) <- c(na_by_study[1,])
-
-    na_by_study <- na_by_study %>% map_df(~sum(is.na(.))) %>%
-      pivot_longer(cols = df$NCTId,
-                   names_to = "ID",
-                   values_to = "Missing") %>%
-      mutate(PercentMissing = round(Missing*100/nrow(df),2)) %>%
-      arrange(Missing) %>%
-      mutate(ID = factor(ID,levels = Field)) %>%
-      mutate(PctNA = ifelse(PercentMissing >= 75,'> 75%',
-                            ifelse(PercentMissing >= 50,'> 50%',
-                                   ifelse(PercentMissing >= 25,'> 25%',
-                                          ifelse(PercentMissing >= 0,'> 0%',NA)))))
-
-  })
 
     output$missing_data_plot <- renderPlot({
 
@@ -387,24 +369,6 @@ server = function(input, output, session) {
 
     }, height = 800)
 
-    output$missing_by_study_plot <- renderPlot({
-
-      p <- na_by_study() %>% ggplot(aes(x=ID, y=PercentMissing)) +
-        geom_segment(aes(x=ID, xend=ID, y=0, yend = PercentMissing, color = PctNA),
-                     size = 1, alpha =0.9)+
-        geom_point(size=3, color="black", alpha = 0.9) +
-
-        theme_light()+
-        theme(
-          text = element_text(size = 13),
-          legend.position = "none",
-          panel.border = element_blank()
-        )+
-        coord_flip()
-
-      p
-
-    }, height = 800)
 
 
   output$missing_data_table <- renderDataTable({
