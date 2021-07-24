@@ -18,7 +18,7 @@ ui = fluidPage(
                                                            selected = c("NCTId","Acronym","StudyType","OverallStatus","LeadSponsorName"))
                                     )
                              ),
-                             column(10, DT::dataTableOutput("df_table"))
+                             column(10, DTOutput("df_table"))
                          )
                 ),
                 tabPanel("Data Snippet",verbatimTextOutput("snippet")),
@@ -103,9 +103,6 @@ ui = fluidPage(
                 tabPanel("Missing Data",
                          fluidRow(column(1), #missing data plot controls
                                   column(7,plotOutput("missing_data_plot")),
-                                  column(4,dataTableOutput("missing_data_table"))),
-                         fluidRow(column(1), #missing data plot controls
-                                  column(7,plotOutput("missing_by_study_plot")),
                                   column(4,dataTableOutput("missing_data_table")))),
                 tabPanel("?", mainPanel(fluidRow(column(12,h3("Welcome to rctexplorer"),
 

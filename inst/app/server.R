@@ -1,6 +1,3 @@
-# selected_cols <- c("NCTId","StudyType","OverallStatus","StartDate",
-#                    "CompletionDate","Condition","Phase","EnrollmentCount","ArmGroupType","InterventionType",
-#                    "InterventionMeshTerm","Gender","AgeRange","HealthyVolunteers")
 
 server = function(input, output, session) {
 
@@ -16,8 +13,9 @@ server = function(input, output, session) {
   output$snippet <- renderPrint({
     head(df[input$df_table_rows_all,], n = 15)
   })
+
 ###############################################################################
-  # STUDIES DATATABLE
+#   # STUDIES DATATABLE
     # select deselect reset columns to show
   observe({
     if (input$select_all > 0) {
@@ -34,7 +32,7 @@ server = function(input, output, session) {
 
       }}
   })
-
+#
   observe({
     if (input$reset > 0) {
       updateCheckboxGroupInput(session=session, inputId="show_vars",
@@ -42,13 +40,12 @@ server = function(input, output, session) {
                               selected = c("NCTId","Acronym","StudyType","OverallStatus","LeadSponsorName"))
     }
   })
-
-
-
+#
+#
+#
     # data table output
-    output$df_table <- DT::renderDT({
-        DT::datatable(
-            df[,input$show_vars, drop = FALSE],
+    output$df_table <- renderDT({
+      datatable(df[,input$show_vars, drop = FALSE],
             selection = list(target = 'row+column'),
             filter = 'top',
             extensions = "Buttons",
@@ -67,8 +64,8 @@ server = function(input, output, session) {
                 server = TRUE)
         )
     })
-###############################################################################
-    # ARMS DATA TABLE
+# ###############################################################################
+#     # ARMS DATA TABLE
 
     arms_table_data <- reactive({
       arms <- to_arms(df[input$df_table_rows_all,])
@@ -188,7 +185,7 @@ server = function(input, output, session) {
 
 
     })
-################################################################################
+# ################################################################################
     # PLOTS
     # One variable
     output$univariate_plot <- renderPlot({
@@ -327,7 +324,7 @@ server = function(input, output, session) {
         coord_flip()
 
       }, height = 600)#
-
+#
   na_data <- reactive ({
 
    na_dat <- df[input$df_table_rows_all,] %>% map_df(~sum(is.na(.))) %>%
@@ -345,7 +342,6 @@ server = function(input, output, session) {
 
 
   })
-
 
 
     output$missing_data_plot <- renderPlot({
@@ -376,7 +372,52 @@ server = function(input, output, session) {
     na_data() %>% arrange(desc(Missing))
 
     })
-}
+
+  # na_by_study <- reactive({
+  #
+  #   na_by_study <- as.data.frame(t(df[input$df_table_rows_all,]))
+  #
+  #   colnames(na_by_study) <- c(na_by_study[1,])
+  #
+  #   na_by_study <- na_by_study %>% map_df(~sum(is.na(.))) %>%
+  #     pivot_longer(cols = df$NCTId,
+  #                  names_to = "ID",
+  #                  values_to = "Missing") %>%
+  #     mutate(PercentMissing = round(Missing*100/nrow(df),2)) %>%
+  #     arrange(Missing) %>%
+  #     mutate(ID = factor(ID,levels = Field)) %>%
+  #     mutate(PctNA = ifelse(PercentMissing >= 75,'> 75%',
+  #                           ifelse(PercentMissing >= 50,'> 50%',
+  #                                  ifelse(PercentMissing >= 25,'> 25%',
+  #                                         ifelse(PercentMissing >= 0,'> 0%',NA)))))
+  #
+  # })
+ # output$missing_by_study_plot <- renderPlot({
+ #
+ #  p <- na_by_study() %>% ggplot(aes(x=ID, y=PercentMissing)) +
+ #    geom_segment(aes(x=ID, xend=ID, y=0, yend = PercentMissing, color = PctNA),
+ #                 size = 1, alpha =0.9)+
+ #    geom_point(size=3, color="black", alpha = 0.9) +
+ #
+ #    theme_light()+
+ #    theme(
+ #      text = element_text(size = 13),
+ #      legend.position = "none",
+ #      panel.border = element_blank()
+ #    )+
+ #    coord_flip()
+ #
+ #  p
+ #
+ # }, height = 800)
+
+ # output$missing_study_table <- renderDataTable({
+ #
+ #   na_by_study() %>% arrange(desc(Missing))
+ #
+ # })
+
+ }
 
 
 
