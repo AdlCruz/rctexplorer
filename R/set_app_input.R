@@ -27,5 +27,8 @@ set_app_input <- function (search_expr,
   # cleaning and transforming function
   df <- clean_app_input(df)
 
-  return(df)
+  df_key <- list(df = df,key = list(se = search_expr,n = nrow(df)))
+
+  return(df_key)
 }
+

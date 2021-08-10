@@ -8,7 +8,7 @@
 #' df <- set_app_input("psoriatic arthritis")
 #' launch_explorer(df)
 
-launch_explorer <- function(df = df) {
+launch_explorer <- function(data = data) {
 
     shiny::runApp(system.file("app", package = "rctexplorer"))
 

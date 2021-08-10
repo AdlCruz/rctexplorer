@@ -2,6 +2,12 @@
 server = function(input, output, session) {
 
 ###############################################################################
+
+  # Print search information
+  output$key <- renderPrint({
+    paste("The search expression",key$se,"returned",key$n,"studies.")
+  })
+
   # Generate data summaries
   output$summary <- renderPrint({
     summary(df[input$df_table_rows_all,])
