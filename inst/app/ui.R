@@ -5,7 +5,7 @@ enrolled <- df$EnrollmentCount[which(!is.na(df$EnrollmentCount))]
 
 
 ui = fluidPage(
-    titlePanel("Explore, Select, Download and Plot your search of clinicaltrials.gov",
+    titlePanel("Explore your search of clinicaltrials.gov",
                windowTitle = "Data Explorer"),
     tabsetPanel(id = "panels",
                 tabPanel("Data Table",

@@ -8,7 +8,7 @@
 
 clean_app_input<- function (df) ({
 
-    # remove rank or NCTId
+    # remove rank
     df <- df[,-1]
     # blanks into NAs
     df <- na_if(df, "")

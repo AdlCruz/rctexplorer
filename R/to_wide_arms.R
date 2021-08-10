@@ -14,7 +14,7 @@ to_wide_arms <- function(df) {
 
     af <- df %>% filter(!is.na(ArmGroupInterventionName))
 
-    lab_names <- paste("label",seq(1:50),sep = "")
+    lab_names <- paste("label",seq(1:70),sep = "")
 
     bf <- af %>% separate( col = ArmGroupInterventionName,
                          into = lab_names, sep = '\\|',
