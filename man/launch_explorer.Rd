@@ -4,7 +4,7 @@
 \alias{launch_explorer}
 \title{Launch Data Explorer Shiny App}
 \usage{
-launch_explorer(data = data)
+launch_explorer(data)
 }
 \arguments{
 \item{df}{Dataframe obtained through set_app_input()}

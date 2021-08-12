@@ -5,7 +5,12 @@ server = function(input, output, session) {
 
   # Print search information
   output$key <- renderPrint({
+    if (length(key) == 1) {
+      paste(key)
+    }
+    else {
     paste("The search expression",key$se,"returned",key$n,"studies.")
+    }
   })
 
   # Generate data summaries
