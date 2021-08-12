@@ -337,7 +337,7 @@ server = function(input, output, session) {
       pivot_longer(cols = names(df),
                    names_to = "Field",
                    values_to = "Missing") %>%
-      mutate(PercentMissing = round(Missing*100/nrow(df),2)) %>%
+      mutate(PercentMissing = round(Missing*100/nrow(df[input$df_table_rows_all,]),2)) %>%
      arrange(Missing) %>%
      mutate(Field = factor(Field,levels = Field)) %>%
      mutate(PctNA = ifelse(PercentMissing >= 75,'> 75%',
