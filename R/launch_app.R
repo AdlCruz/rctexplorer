@@ -9,7 +9,9 @@
 #' launch_explorer(df)
 
 launch_explorer <- function(data) {
-  shinyOptions(data = data)
+  lst <- check_app_input(data)
+
+  shinyOptions(df = lst$df, key = lst$key)
   shiny::runApp(system.file("app", package = "rctexplorer"))
 
 }

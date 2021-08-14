@@ -1,5 +1,4 @@
-data <- getShinyOption("data")
+df <- getShinyOption("df")
+key <- getShinyOption("key")
 
-df <- check_df(data = data)
-key <- check_key(data = data)
 

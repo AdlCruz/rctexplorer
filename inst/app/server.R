@@ -1,4 +1,5 @@
 
+
 server = function(input, output, session) {
 
 ###############################################################################
@@ -186,7 +187,7 @@ server = function(input, output, session) {
 
       visNetwork(nodes = nodes,edges = edges, height = "100vh", width = "100%") %>%
 
-        visNodes( shape = "diamond") %>% # ,"triangle","dot"
+        visNodes( shape = "dot") %>% # ,"triangle","dot", "diamond"
 
         visIgraphLayout(layout = input$layout) %>%
 
