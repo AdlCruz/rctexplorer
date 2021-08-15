@@ -12,11 +12,12 @@
 to_wide_arms <- function(df) {
 
 
-    af <- df %>% filter(!is.na(ArmGroupInterventionName))
+
+    df$ArmGroupInterventionName[is.na(df$ArmGroupInterventionName)] <- "Empty"
 
     lab_names <- paste("label",seq(1:70),sep = "")
 
-    bf <- af %>% separate( col = ArmGroupInterventionName,
+    bf <- df %>% separate( col = ArmGroupInterventionName,
                          into = lab_names, sep = '\\|',
                          remove = TRUE, extra = "merge", fill = "right",
                          convert = TRUE )
