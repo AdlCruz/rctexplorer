@@ -1,5 +1,6 @@
-Working. In development. Install with ```devtools::install_github("AdlCruz/rctexplorer")```
-Depends on [`rctapi`](https://github.com/AdlCruz/rctapi)
+Working. In development. Install with `devtools::install_github("AdlCruz/rctexplorer")`
+
+Depends on [`rctapi`](https://github.com/AdlCruz/rctapi).
 
 # rctexplorer: Explore ClinicalTrials.gov data
 
