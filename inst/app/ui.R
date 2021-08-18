@@ -134,6 +134,7 @@ Warning: all filtering resets when columns are toggled on/off."),
                                                         h3(strong("Useful links")),
                                                         p(a("https://clinicaltrials.gov/api/gui")),
                                                         p(a("https://regex101.com/")),
+                                                        p(a("https://clinicaltrials.gov/api/gui/ref/crosswalks")),
                                                          offset = 3))))
     ))
 
