@@ -1,16 +1,18 @@
-# rctexplorer
-Currently functional. Pkg in development. Install with ```devtools::install_github("AdlCruz/rctexplorer")```
+Working. In development. Install with ```devtools::install_github("AdlCruz/rctexplorer")```
+Depends on [`rctapi`](https://github.com/AdlCruz/rctapi)
 
-This package contains an R Shiny application that allows the user to explore a dataframe of studies downloaded from clinicaltrials.gov. 
+# rctexplorer: Explore ClinicalTrials.gov data
 
-Using the application:
+## 1. Download the data
 
-Save a dataframe with study results with ```set_app_input()```.
+`data <- set_app_input("search_ expr = "psoriatic arthritis", fields - for_explorer, max_studies = 500)`
 
-```df <- set_app_input("psoriatic arthritis", registration_fields, 500)```
-then
-```launch_explorer(df)```
+## 2. Launch the app
 
-The use of ```set_app_input()``` is recommended as it carries out useful cleaning and type transformations. There is a degree of flexiblity and the application will launch with any dataframe argument. The user may also modify the list of fields to feed into the application.
+`launch_explorer(data)`
 
-Inside the application there are different tabs that allow the user to interact with their dataframe.
+There is a degree of flexiblity and the application will also launch with a dataframe argument.
+
+Inside the application there are different tabs that allow the user to interact with the dataframe.
+
+The Help tab is marked ?
