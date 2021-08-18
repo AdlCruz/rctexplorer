@@ -12,8 +12,15 @@ Depends on [`rctapi`](https://github.com/AdlCruz/rctapi).
 
 `launch_explorer(data)`
 
-There is a degree of flexiblity and the application will also launch with a dataframe argument.
+There is a degree of flexiblity and the application will also attempt to launch with any dataframe argument.
+For example, a dataframe coming from `data <- rctapi::get_study_fields()`.
+
+## 3. Use the app
 
 Inside the application there are different tabs that allow the user to interact with the dataframe.
 
 The Help tab is marked ?
+
+NOTE: This package includes very little internal error handling.
+
+Developed in fulfillment of HDS MSc Summer Project
