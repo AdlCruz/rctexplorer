@@ -6,7 +6,7 @@ Depends on [`rctapi`](https://github.com/AdlCruz/rctapi).
 
 ## 1. Download the data
 
-`data <- set_app_input("search_ expr = "psoriatic arthritis", fields - for_explorer, max_studies = 500)`
+`data <- set_app_input(search_ expr = "psoriatic arthritis", fields = for_explorer, max_studies = 500)`
 
 ## 2. Launch the app
 
@@ -19,7 +19,7 @@ For example, a dataframe coming from `data <- rctapi::get_study_fields()`.
 
 Inside the application there are different tabs that allow the user to interact with the dataframe.
 
-The Help tab is marked ?
+The Help tab is marked "?"
 
 NOTE: This package includes very little internal error handling.
 
