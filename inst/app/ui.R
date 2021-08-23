@@ -1,7 +1,7 @@
 enrolled <- df$EnrollmentCount[which(!is.na(df$EnrollmentCount))]
 
 ui = fluidPage(
-    titlePanel(title = h2(strong("Explore your search of clinicaltrials.gov"),verbatimTextOutput("key")),
+    titlePanel(title = h2(strong("Explore your search of ClinicalTrials.gov"),verbatimTextOutput("key")),
                windowTitle = "Data Explorer"),
     tabsetPanel(id = "panels",
                 tabPanel("Data Table",
@@ -22,7 +22,7 @@ ui = fluidPage(
                 tabPanel("Structure",verbatimTextOutput("str")),
                 tabPanel("Plots",
 
-                         fluidRow(column(2,h3("Univariate Plots"),h4("Treemap plot"),
+                         fluidRow(column(2,h4("Treemap plot"),
                                          div(style = "margin-top:15px"),
                                          selectInput("treemap_var","Choose a variable",
                                                                names(df),
@@ -32,7 +32,7 @@ ui = fluidPage(
                                   column(7,plotOutput("univariate_plot")),
                                   column(3,div(style = "margin-top:10px"),dataTableOutput("univariate_table"))),
                          hr(),
-                         fluidRow((column(2,h3("Bivariate Plots"),h4("Stacked barplot"),h5("Only first 40 rows from the right side table"),
+                         fluidRow((column(2,h4("Stacked barplot"),h5("Using the first 40 rows from the right side table"),
                                           offset = 2)),
 
                                     (column(7,column(4,selectInput("biv_1","Variables to group by",
