@@ -19,7 +19,7 @@ For example, a dataframe coming from `data <- rctapi::get_study_fields()`.
 
 Inside the application there are different tabs that allow the user to interact with the dataframe.
 
-The Help tab is marked ?
+The Help tab is marked "?"
 
 NOTE: This package includes very little internal error handling.
 
