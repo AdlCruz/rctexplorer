@@ -2,10 +2,14 @@ Package: rctexplorer
 Type: Package
 Title: Explore Data From clinicaltrials.gov
 Version: 0.1.0
-Author: Arturo de la Cruz
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: 
+    person(given = "Arturo",
+           family = "De La Cruz Libardi",
+           role = c("aut", "cre"),
+           email = "arturodlcl@gmail.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Explore Clinical Trial Data through Interactive Shiny App.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
