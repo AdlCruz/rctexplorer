@@ -1,6 +1,6 @@
 Package: rctexplorer
 Type: Package
-Title: Explore Data From clinicaltrials.gov
+Title: Explore Data From ClinicalTrials.gov
 Version: 0.1.0
 Authors@R: 
     person(given = "Arturo",
