@@ -6,7 +6,7 @@ Depends on [`rctapi`](https://github.com/AdlCruz/rctapi).
 
 ## 1. Download the data
 
-`data <- set_app_input(search_ expr = "psoriatic arthritis", fields = for_explorer, max_studies = 500)`
+`data <- set_app_input(search_expr = "psoriatic arthritis", fields = for_explorer, max_studies = 500)`
 
 ## 2. Launch the app
 
