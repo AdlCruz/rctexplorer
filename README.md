@@ -1,4 +1,4 @@
-Working status ✔. Install with `devtools::install_github("AdlCruz/rctexplorer")`
+Working status X. Install with `devtools::install_github("AdlCruz/rctexplorer")`
 
 Depends on [`rctapi`](https://github.com/AdlCruz/rctapi).
 
