@@ -361,7 +361,7 @@ server = function(input, output, session) {
 
     p <- na_data() %>% ggplot(aes(x=Field, y=PercentMissing)) +
         geom_segment(aes(x=Field, xend=Field, y=0, yend = PercentMissing, color = PctNA),
-                     size = 1, alpha =0.9)+
+                     linewidth = 1, alpha =0.9)+
       geom_point(size=3, color="black", alpha = 0.9) +
 
       theme_light()+

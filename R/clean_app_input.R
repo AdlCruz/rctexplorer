@@ -10,8 +10,9 @@ clean_app_input<- function (df) ({
 
     # remove rank
     df <- df[,-1]
+
     # blanks into NAs
-    df <- na_if(df, "")
+    df[df==""] <- NA
 
     # age range column
     if (all(age_cols %in% names(df))) {
