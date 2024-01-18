@@ -1,0 +1,21 @@
+url: https://adlcruz.github.io/rctexplorer/
+template:
+  bootstrap: 5
+  bootswatch: cyborg
+home:
+  title: Explore ClinicalTrials.gov data from R
+  description: >
+    Did you just download a bunch of clinical trial data into a table  in R
+    using 'rctapi'?
+    Maybe you are looking for a dashboard app that visualises it and allows you
+    to explore it interactively. rctexplorer is an R package/application that
+    does just that.
+  strip_header: no
+  sidebar:
+    structure:
+    - links
+    - license
+    - community
+    - citation
+    - authors
+    - dev

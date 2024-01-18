@@ -31,3 +31,4 @@ Depends:
     visNetwork,
     igraph,
     sjmisc
+URL: https://adlcruz.github.io/rctexplorer/
