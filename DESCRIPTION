@@ -7,7 +7,7 @@ Authors@R:
            family = "De La Cruz Libardi",
            role = c("aut", "cre"),
            email = "arturodlcl@gmail.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           comment = c(ORCID = "0009-0001-1543-7999"))
 Description: Explore Clinical Trial Data through Interactive Shiny App.
 License: MIT + file LICENSE
 Encoding: UTF-8
