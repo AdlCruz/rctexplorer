@@ -13,7 +13,3 @@ to_arms(df)
 Takes data frame with studies restults and returns dataframe with one row per arm
 to_arms()
 }
-\examples{
-to_arms(df)
-
-}

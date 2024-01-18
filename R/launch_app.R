@@ -4,9 +4,6 @@
 #' @param df Dataframe obtained through set_app_input()
 #' @keywords launch app
 #' @export
-#' @examples
-#' df <- set_app_input("psoriatic arthritis")
-#' launch_explorer(df)
 
 launch_explorer <- function(data) {
   lst <- check_app_input(data)

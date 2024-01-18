@@ -12,7 +12,7 @@ Description: Explore Clinical Trial Data through Interactive Shiny App.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Depends: 
     R (>= 2.10),
     shiny,
@@ -31,5 +31,5 @@ Depends:
     visNetwork,
     igraph,
     sjmisc
-Remotes:adlcruz/rctapi
+Remotes: adlcruz/rctapi
 URL: https://adlcruz.github.io/rctexplorer/

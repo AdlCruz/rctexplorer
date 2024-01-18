@@ -23,12 +23,6 @@ and returns one dataframe.
 \details{
 set_app_input()
 }
-\examples{
-'set_app_input()' cannot be used as input for the data explorer app as shown.
-launch_explorer(set_app_input(search_expr = 'psoriatic arthritis',fields = for_explorer, max_studies = 300))
-but must first be used to save a dataframe object
-df <- set_app_input(search_expr = 'psoriatic arthritis',fields = for_explorer, max_studies = 300)
-}
 \keyword{app}
 \keyword{input}
 \keyword{set}

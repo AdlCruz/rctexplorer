@@ -4,8 +4,6 @@
 #' to_edges(df)
 #' @param df a long dataframe of arms
 #' @export
-#' @examples
-#' to_edges(df))
 
 to_edges <- function(long_arms) {
 # getting unique ids, creating empty dataframe

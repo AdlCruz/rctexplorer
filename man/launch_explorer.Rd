@@ -12,9 +12,5 @@ launch_explorer(data)
 \description{
 This function takes a dataframe as parameter and launches the explorer application.
 }
-\examples{
-df <- set_app_input("psoriatic arthritis")
-launch_explorer(df)
-}
 \keyword{app}
 \keyword{launch}

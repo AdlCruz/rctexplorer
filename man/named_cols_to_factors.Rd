@@ -18,8 +18,3 @@ Enhances datatable usage by providing ready levels on click of the filter boxes.
 \details{
 named_cols_to_factors()
 }
-\examples{
-Attempts to mutate all dataframe columns to factors by providing character vector of column names
-named_cols_to_factors(df, names(df))
-
-}

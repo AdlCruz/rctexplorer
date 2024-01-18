@@ -4,8 +4,6 @@
 #' to_arms()
 #' @param df a dataframe to manipulate
 #' @export
-#' @examples
-#' to_arms(df)
 #'
 to_arms <- function(df) {
 

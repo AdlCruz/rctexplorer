@@ -7,9 +7,6 @@
 #' named_cols_to_factors()
 #' @param df a dataframe
 #' @param fct_cols a character vector, with the names of columns in the dataframe
-#' @examples
-#' Attempts to mutate all dataframe columns to factors by providing character vector of column names
-#' named_cols_to_factors(df, names(df))
 #'
 named_cols_to_factors <- function (df, fct_cols = fct_cols) {
 
