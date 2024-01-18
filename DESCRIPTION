@@ -31,4 +31,5 @@ Depends:
     visNetwork,
     igraph,
     sjmisc
+Remotes:adlcruz/rctapi
 URL: https://adlcruz.github.io/rctexplorer/
